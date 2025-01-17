@@ -15,17 +15,16 @@ import { UserProvider, useUserContext } from "./context/UserContext";
 
 import "./index.css";
 
-// ProtectedRoute Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { user } = useUserContext();
+  const { user, token } = useUserContext();
 
-  if (!user) {
-    // Redirect to login if no user is logged in
+  if (!token || !user) {
+    // Redirect to login if the token or user is not present
     return <Navigate to="/login" replace />;
   }
 
   if (!allowedRoles.includes(user.role)) {
-    // Redirect to a 403 page or login if the user role is not allowed
+    // Redirect to a "403 Forbidden" page or login if the user role is not allowed
     return <Navigate to="/login" replace />;
   }
 

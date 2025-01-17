@@ -38,7 +38,12 @@ router.get("/user/:userId/folders", async (req, res) => {
       { $sort: { _id: -1 } },
     ]);
 
-    res.status(200).json(folders.map((folder) => ({ date: folder._id })));
+    res.status(200).json(
+      folders.map((folder) => ({
+        date: folder._id, // Date from aggregation
+        userId: userId, // Include userId from request
+      }))
+    );
   } catch (error) {
     res.status(500).json({
       message: "Error fetching folders",
@@ -75,6 +80,39 @@ router.get("/user/:userId/folder/:date", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Error fetching images for folder",
+      error: error.message,
+    });
+  }
+});
+
+// Get all users with their userId and username
+router.get("/users", async (req, res) => {
+  try {
+    const users = await TaskUpload.aggregate([
+      {
+        $group: {
+          _id: "$userId", // Group by userId
+          username: { $first: "$username" }, // Get the first username for each userId
+        },
+      },
+      {
+        $project: {
+          userId: "$_id", // Rename _id to userId
+          username: 1, // Include the username
+          _id: 0, // Exclude the original _id field
+        },
+      },
+      { $sort: { username: 1 } }, // Sort alphabetically by username
+    ]);
+
+    if (!users.length) {
+      return res.status(200).json({ message: "No users found", data: [] });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching users",
       error: error.message,
     });
   }

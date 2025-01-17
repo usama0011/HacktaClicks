@@ -14,6 +14,9 @@ import UpdateUser from "./pages/UpdateUser";
 import { UserProvider, useUserContext } from "./context/UserContext";
 
 import "./index.css";
+import AdminDashboard from "./pages/AdminDashboard";
+import WelcomeAdminDashboardPage from "./pages/WelcomeAdminDashboardPage";
+import AdminSideImagesView from "./pages/AdminSideImagesView";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, token } = useUserContext();
@@ -85,22 +88,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/UpdateUser"
-            element={
-              <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
-                <UpdateUser />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/user/:username"
-            element={
-              <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
-                <UserFolder />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="/admin/user/:username/folder/:dateFolder"
             element={
@@ -109,6 +97,32 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admindashboard"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          >
+            {/* Nested Admin Routes */}
+            <Route index element={<WelcomeAdminDashboardPage />} />
+            <Route path="manageusers" element={<UpdateUser />} />
+            <Route path="viewfolders/:userId" element={<UserFolder />} />
+            <Route
+              path="adminside/:userId/folder/:folderDate"
+              element={<AdminSideImagesView />}
+            />
+            <Route path="managefolders" element={<GetAllFolders />} />
+            <Route
+              path="reports"
+              element={<h3>Reports Page Coming Soon!</h3>}
+            />
+            <Route
+              path="settings"
+              element={<h3>Settings Page Coming Soon!</h3>}
+            />
+          </Route>
         </Routes>
       </BrowserRouter>
     </UserProvider>

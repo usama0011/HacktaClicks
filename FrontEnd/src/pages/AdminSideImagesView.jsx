@@ -54,10 +54,6 @@ const AdminSideImagesView = () => {
     fetchImages();
   }, [userId, folderDate]); // Depend on userId and folderDate params
 
-  const handleImageClick = (imageId) => {
-    navigate(`/admindashboard/image/details/${imageId}`);
-  };
-
   if (loading) {
     return (
       <div className="viewimages-loading">

@@ -65,7 +65,7 @@ const UploadImages = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/taskupload",
+        "https://hackta-clicks-backend.vercel.app/api/taskupload",
         taskData
       );
       message.success("Image URL uploaded to the backend successfully!");

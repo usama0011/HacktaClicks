@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Row, Col, Card, Image, Spin, Typography, message } from "antd";
+import { CalendarOutlined } from "@ant-design/icons";
 import axiosInstance from "../components/BaseURL";
 import "../styles/ViewImages.css";
 
@@ -22,6 +23,28 @@ const ViewImages = () => {
     } catch (error) {
       message.error("Invalid date format in the URL.");
       return null; // Return null if invalid
+    }
+  };
+
+  const formatDateTime = (dateString) => {
+    try {
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true,
+      };
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date format");
+      }
+      return date.toLocaleString("en-US", options); // Format date
+    } catch (error) {
+      return "Invalid date"; // Fallback for invalid date
     }
   };
 
@@ -69,11 +92,33 @@ const ViewImages = () => {
             <Card className="viewimages-card" hoverable>
               <Image
                 src={image.imageurl}
-                alt={image.username}
+                alt={formatDateTime(image.createdAt)}
                 className="viewimages-image"
-                // Removed `preview={false}` to enable preview
               />
-              <p className="viewimages-name">{image.username}</p>
+              <div
+                style={{
+                  marginTop: "8px",
+                  display: "flex",
+                  alignItems: "center",
+
+                  justifyContent: "space-between",
+                  fontSize: "14px",
+                  color: "#555", // Subtle text color
+                  fontWeight: "500", // Slightly bold for emphasis
+                }}
+                className="viewimages-date"
+              >
+                <CalendarOutlined
+                  style={{
+                    marginRight: "8px",
+                    color: "#1890ff", // Use a primary color for the icon
+                    fontSize: "16px", // Slightly larger icon for better visibility
+                  }}
+                />
+                <div style={{ fontStyle: "italic" }}>
+                  {formatDateTime(image.createdAt)}
+                </div>
+              </div>
             </Card>
           </Col>
         ))}

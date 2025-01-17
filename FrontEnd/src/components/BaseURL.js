@@ -1,7 +1,8 @@
 // src/axiosConfig.js
 import axios from "axios";
-
-const baseURL = "http://localhost:5000/api"; // Replace with your API base URL
+//http://localhost:5000/api
+//https://hackta-clicks-backend.vercel.app/
+const baseURL = "https://hackta-clicks-backend.vercel.app"; // Replace with your API base URL
 
 const axiosInstance = axios.create({
   baseURL,

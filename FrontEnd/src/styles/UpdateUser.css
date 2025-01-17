@@ -1,0 +1,45 @@
+.updateuser-container {
+  padding: 40px 20px;
+  background-color: #cfdec7; /* Updated background color */
+  min-height: 100vh;
+}
+
+.updateuser-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: black; /* Updated text color */
+  margin-bottom: 20px;
+}
+
+.updateuser-table {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.updateuser-modal .ant-modal-content {
+  border-radius: 12px;
+}
+
+.updateuser-form {
+  padding: 10px;
+}
+
+.updateuser-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.updateuser-form .ant-btn-primary {
+  background-color: #cfdec7; /* Updated primary button color */
+  border-color: #cfdec7;
+  font-weight: 500;
+  color: black; /* Updated button text color */
+}
+
+.updateuser-form .ant-btn-primary:hover {
+  background-color: #c1d3b5; /* Slightly darker shade on hover */
+  border-color: #c1d3b5;
+  color: black; /* Maintain text color on hover */
+}

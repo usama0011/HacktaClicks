@@ -1,0 +1,136 @@
+/* General Page Styles */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("https://images.unsplash.com/photo-1674027326252-a09b3473e18f?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    no-repeat center center/cover;
+}
+
+/* Login Container */
+.login-container {
+  display: flex;
+  flex-direction: row;
+  width: 900px;
+  height: 500px;
+  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+/* Left Section */
+.login-left {
+  flex: 1;
+  background-color: #f2f4f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-illustration {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Right Section */
+.login-right {
+  flex: 1.2;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #333;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.login-subtitle {
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.login-input {
+  border-radius: 6px;
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login-remember {
+  font-size: 14px;
+  color: #555;
+}
+
+.login-forgot {
+  font-size: 14px;
+  color: #3c6327;
+  text-decoration: none;
+}
+
+.login-forgot:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  background-color: #cfdec7;
+  border-color: #cfdec7;
+  color: black;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+.login-button:hover {
+  background-color: #333;
+  border-color: #333;
+}
+
+.google-login-button {
+  margin-top: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #333;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+.google-login-button:hover {
+  border-color: #bbb;
+}
+
+.login-signup-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login-signup-link a {
+  color: #3c6327;
+  text-decoration: none;
+}
+
+.login-signup-link a:hover {
+  text-decoration: underline;
+}

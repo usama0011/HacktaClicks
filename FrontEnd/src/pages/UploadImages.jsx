@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import { Upload, Button, Progress, message, Card, Row, Col } from "antd";
+import React, { useContext, useState } from "react";
+import { Upload, Button, Progress, message, Card, Row, Col, Image } from "antd";
 import { UploadOutlined, InboxOutlined } from "@ant-design/icons";
+import axios from "axios";
 import "../styles/UploadImage.css";
+import { UserContext } from "../context/UserContext";
 
 const { Dragger } = Upload;
 
 const UploadImages = () => {
+  const { user } = useContext(UserContext); // Get user data from context
   const [fileList, setFileList] = useState([]); // Track files
   const [uploading, setUploading] = useState(false); // Track upload state
   const [progress, setProgress] = useState(0); // Track progress
+  const [previewImage, setPreviewImage] = useState(null); // Preview image
 
-  const handleUpload = () => {
+  const handleUploadToCloudinary = async () => {
     if (fileList.length === 0) {
       message.warning("Please select a file to upload!");
       return;
@@ -19,19 +23,56 @@ const UploadImages = () => {
     setUploading(true);
     setProgress(0);
 
-    // Simulate upload process
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setUploading(false);
-          message.success("Image uploaded successfully!");
-          setFileList([]);
-          return 100;
+    const formData = new FormData();
+    formData.append("file", fileList[0]);
+    formData.append("upload_preset", "hacktaclicks"); // Replace with your Cloudinary upload preset
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dovmnsimj/image/upload", // Replace with your Cloudinary cloud name
+        formData,
+        {
+          onUploadProgress: (event) => {
+            const percentCompleted = Math.round(
+              (event.loaded * 100) / event.total
+            );
+            setProgress(percentCompleted);
+          },
         }
-        return prev + 10; // Increment progress
-      });
-    }, 300);
+      );
+
+      const imageUrl = response.data.secure_url;
+      message.success("Image uploaded to Cloudinary successfully!");
+
+      // Submit to your backend
+      await handleUploadToBackend(imageUrl);
+    } catch (error) {
+      message.error("Failed to upload image to Cloudinary.");
+    } finally {
+      setUploading(false);
+      setFileList([]);
+      setPreviewImage(null);
+    }
+  };
+
+  const handleUploadToBackend = async (imageUrl) => {
+    try {
+      const taskData = {
+        userId: user?.id, // From context
+        username: user?.username, // From context
+        imageurl: imageUrl,
+        shift: user?.shift,
+      };
+
+      const response = await axios.post(
+        "http://localhost:5000/api/taskupload",
+        taskData
+      );
+      message.success("Image URL uploaded to the backend successfully!");
+      console.log("Backend Response:", response.data);
+    } catch (error) {
+      message.error("Failed to upload image URL to the backend.");
+    }
   };
 
   const draggerProps = {
@@ -39,9 +80,13 @@ const UploadImages = () => {
     multiple: false,
     beforeUpload: (file) => {
       setFileList([file]);
+      setPreviewImage(URL.createObjectURL(file));
       return false; // Prevent default upload behavior
     },
-    onRemove: () => setFileList([]),
+    onRemove: () => {
+      setFileList([]);
+      setPreviewImage(null);
+    },
     fileList,
     showUploadList: true,
   };
@@ -64,6 +109,16 @@ const UploadImages = () => {
               <p className="ant-upload-hint">Or click to select an image</p>
             </Dragger>
 
+            {previewImage && (
+              <div className="upload-preview">
+                <Image
+                  src={previewImage}
+                  alt="Preview"
+                  className="upload-preview-image"
+                />
+              </div>
+            )}
+
             {uploading && (
               <Progress
                 percent={progress}
@@ -74,7 +129,7 @@ const UploadImages = () => {
 
             <Button
               type="primary"
-              onClick={handleUpload}
+              onClick={handleUploadToCloudinary}
               className="upload-button"
               loading={uploading}
               disabled={fileList.length === 0}

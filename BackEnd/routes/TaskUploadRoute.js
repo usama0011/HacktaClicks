@@ -1,6 +1,7 @@
 // TaskUpload Routes
 import express from "express";
 import TaskUpload from "../models/TaskUpload.js"; // Assuming the model is in ../models/TaskUpload.js
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -11,6 +12,71 @@ router.get("/", async (req, res) => {
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Error fetching tasks", error });
+  }
+});
+
+router.get("/user/:userId/folders", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // Validate userId format
+    if (!mongoose.isValidObjectId(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    const folders = await TaskUpload.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId), // Convert userId to ObjectId
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+        },
+      },
+      { $sort: { _id: -1 } },
+    ]);
+
+    res.status(200).json(folders.map((folder) => ({ date: folder._id })));
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching folders",
+      error: error.message,
+    });
+  }
+});
+
+// Get images in a folder by date and user
+router.get("/user/:userId/folder/:date", async (req, res) => {
+  const { userId, date } = req.params;
+
+  try {
+    // Validate the date
+    const folderDate = new Date(date);
+    if (isNaN(folderDate.getTime())) {
+      return res.status(400).json({ message: "Invalid date format" });
+    }
+
+    // Calculate start and end of the day for the date
+    const startOfDay = new Date(folderDate.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(folderDate.setHours(23, 59, 59, 999));
+
+    // Fetch images
+    const images = await TaskUpload.find({
+      userId: userId, // Use 'new' with ObjectId
+      createdAt: {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      },
+    });
+
+    res.status(200).json(images);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching images for folder",
+      error: error.message,
+    });
   }
 });
 
@@ -27,9 +93,9 @@ router.get("/:id", async (req, res) => {
 
 // Create a new task
 router.post("/", async (req, res) => {
-  const { username, imageurl } = req.body;
+  const { username, imageurl, shift, userId } = req.body;
   try {
-    const newTask = new TaskUpload({ username, imageurl });
+    const newTask = new TaskUpload({ username, imageurl, shift, userId });
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {

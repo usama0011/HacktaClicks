@@ -1,114 +1,78 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Row, Col, Checkbox, Card, Modal, Image, Button } from "antd";
+import { Row, Col, Card, Image, Spin, Typography, message } from "antd";
+import axiosInstance from "../components/BaseURL";
 import "../styles/ViewImages.css";
 
-const images = [
-  {
-    name: "image1.jpg",
-    src: "https://images.unsplash.com/photo-1736185669739-36a8e70cb6c4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzNnx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    name: "image2.jpg",
-    src: "https://images.unsplash.com/photo-1736185669739-36a8e70cb6c4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzNnx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    name: "image3.jpg",
-    src: "https://images.unsplash.com/photo-1736185669739-36a8e70cb6c4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzNnx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
+const { Title } = Typography;
 
 const ViewImages = () => {
   const { dateFolder } = useParams();
-  const [previewVisible, setPreviewVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleImageClick = (src) => {
-    setPreviewImage(src);
-    setPreviewVisible(true);
+  // Helper to validate and format the date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return null; // Invalid date
+    }
+    return date.toISOString().split("T")[0]; // Convert to 'YYYY-MM-DD' format
   };
 
-  const handleModalClose = () => {
-    setPreviewVisible(false);
-    setPreviewImage("");
+  const fetchImages = async () => {
+    try {
+      const userId = JSON.parse(localStorage.getItem("user")).id; // Get user ID from localStorage
+
+      // Format the date
+      const formattedDate = formatDate(dateFolder);
+      if (!formattedDate) {
+        throw new Error("Invalid date format in the URL");
+      }
+
+      const response = await axiosInstance.get(
+        `/taskupload/user/${userId}/folder/${formattedDate}`
+      );
+      setImages(response.data);
+    } catch (error) {
+      message.error(error.message || "Failed to fetch images for the folder.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSelectImage = (name) => {
-    setSelectedImages((prev) =>
-      prev.includes(name)
-        ? prev.filter((item) => item !== name)
-        : [...prev, name]
+  useEffect(() => {
+    fetchImages();
+  }, [dateFolder]);
+
+  if (loading) {
+    return (
+      <div className="viewimages-loading">
+        <Spin tip="Loading Images..." size="large" />
+      </div>
     );
-  };
-
-  const handleDelete = () => {
-    console.log("Deleting selected images:", selectedImages);
-    setIsModalVisible(false);
-    setSelectedImages([]);
-  };
+  }
 
   return (
     <div className="viewimages-container">
-      <h2 className="viewimages-title">Images from {dateFolder}</h2>
+      <Title level={2} className="viewimages-title">
+        Images from {dateFolder}
+      </Title>
       <Row gutter={[16, 16]} justify="start">
         {images.map((image) => (
-          <Col xs={24} sm={12} md={8} lg={6} key={image.name}>
+          <Col xs={24} sm={12} md={8} lg={6} key={image._id}>
             <Card className="viewimages-card" hoverable>
               <Image
-                src={image.src}
-                alt={image.name}
+                src={image.imageurl}
+                alt={image.username}
                 className="viewimages-image"
                 preview={false}
-                onClick={() => handleImageClick(image.src)}
               />
-              <div className="viewimages-footer">
-                <Checkbox
-                  checked={selectedImages.includes(image.name)}
-                  onChange={() => handleSelectImage(image.name)}
-                  className="viewimages-checkbox"
-                />
-              </div>
-              <p className="viewimages-name">{image.name}</p>
+              <p className="viewimages-name">{image.username}</p>
             </Card>
           </Col>
         ))}
       </Row>
-
-      <Button
-        type="primary"
-        danger
-        disabled={selectedImages.length === 0}
-        onClick={() => setIsModalVisible(true)}
-        className="viewimages-delete-selected"
-      >
-        Delete Selected
-      </Button>
-
-      <Modal
-        title="Confirm Deletion"
-        visible={isModalVisible}
-        onOk={handleDelete}
-        onCancel={() => setIsModalVisible(false)}
-      >
-        <p>Are you sure you want to delete the selected images?</p>
-      </Modal>
-
-      <Modal
-        open={previewVisible}
-        footer={null}
-        onCancel={handleModalClose}
-        centered
-        width="80%"
-        bodyStyle={{ textAlign: "center" }}
-      >
-        <Image
-          src={previewImage}
-          alt="Preview"
-          style={{ maxWidth: "100%", maxHeight: "80vh" }}
-        />
-      </Modal>
     </div>
   );
 };

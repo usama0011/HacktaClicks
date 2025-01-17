@@ -7,27 +7,32 @@ import "../styles/ViewImages.css";
 const { Title } = Typography;
 
 const ViewImages = () => {
-  const { dateFolder } = useParams();
+  const { folderName } = useParams();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Helper to validate and format the date
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return null; // Invalid date
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date format");
+      }
+      return date.toISOString().split("T")[0]; // Convert to 'YYYY-MM-DD' format
+    } catch (error) {
+      message.error("Invalid date format in the URL.");
+      return null; // Return null if invalid
     }
-    return date.toISOString().split("T")[0]; // Convert to 'YYYY-MM-DD' format
   };
 
   const fetchImages = async () => {
     try {
       const userId = JSON.parse(localStorage.getItem("user")).id; // Get user ID from localStorage
 
-      // Format the date
-      const formattedDate = formatDate(dateFolder);
+      // Validate and format the date
+      const formattedDate = formatDate(folderName);
       if (!formattedDate) {
-        throw new Error("Invalid date format in the URL");
+        throw new Error("Invalid date format in the URL.");
       }
 
       const response = await axiosInstance.get(
@@ -43,7 +48,7 @@ const ViewImages = () => {
 
   useEffect(() => {
     fetchImages();
-  }, [dateFolder]);
+  }, [folderName]);
 
   if (loading) {
     return (
@@ -56,7 +61,7 @@ const ViewImages = () => {
   return (
     <div className="viewimages-container">
       <Title level={2} className="viewimages-title">
-        Images from {dateFolder}
+        Images from {folderName}
       </Title>
       <Row gutter={[16, 16]} justify="start">
         {images.map((image) => (
@@ -66,7 +71,7 @@ const ViewImages = () => {
                 src={image.imageurl}
                 alt={image.username}
                 className="viewimages-image"
-                preview={false}
+                // Removed `preview={false}` to enable preview
               />
               <p className="viewimages-name">{image.username}</p>
             </Card>

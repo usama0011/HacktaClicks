@@ -5,19 +5,16 @@ export const UserContext = createContext();
 
 // Provider component
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-
-  // Load user data and token from localStorage on mount
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
+    // Load user data from localStorage on initial render
     const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-    if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-      setToken(storedToken);
-    }
-  }, []);
+  const [token, setToken] = useState(() => {
+    // Load token from localStorage on initial render
+    return localStorage.getItem("token");
+  });
 
   // Function to update user and token
   const updateUserContext = (newUser, newToken) => {

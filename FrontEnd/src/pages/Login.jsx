@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../components/BaseURL"; // Import the configured axios instance
 import "../styles/Login.css";
+import { useUserContext } from "../context/UserContext";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { updateUserContext } = useUserContext();
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -15,9 +17,7 @@ const Login = () => {
       const response = await axiosInstance.post("/users/login", values);
       message.success(response.data.message);
 
-      // Save user details and token in localStorage
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      updateUserContext(response.data.user, response.data.token);
 
       // Navigate to the dashboard or desired page after successful login
       navigate("/");

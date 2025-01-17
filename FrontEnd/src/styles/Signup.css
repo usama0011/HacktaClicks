@@ -1,0 +1,119 @@
+/* General Page Styles */
+.signup-page {
+  background: url("https://images.unsplash.com/photo-1674027326252-a09b3473e18f?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+    no-repeat center center/cover; /* Replace with actual background image URL */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Signup Container */
+.signup-container {
+  display: flex;
+  flex-direction: row;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 900px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+}
+
+/* Left Side Styles */
+.signup-left {
+  flex: 1;
+  background-color: white;
+  color: black;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.signup-left .signup-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.signup-left .signup-description {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.signup-left .signup-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+/* Right Side Styles */
+.signup-right {
+  flex: 1.2;
+  padding: 40px 20px;
+}
+
+.signup-form-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.signup-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.signup-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.signup-form .ant-btn-primary {
+  background-color: #cfdec7;
+  border-color: #cfdec7;
+  color: black;
+  height: 40px !important;
+  font-weight: 500;
+}
+
+.signup-form .ant-btn-primary:hover {
+  background-color: #cfdec7 !important;
+  border-color: black !important;
+  color: black !important;
+}
+
+/* Modal Styles */
+.signup-modal .ant-modal-content {
+  border-radius: 12px;
+}
+
+.signup-modal .ant-input-password {
+  margin-top: 10px;
+}
+/* Login Redirect */
+.signup-login-redirect {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.signup-login-redirect .signup-login-link {
+  color: #3c6327;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup-login-redirect .signup-login-link:hover {
+  text-decoration: underline;
+}

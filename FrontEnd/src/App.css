@@ -1,0 +1,110 @@
+/* App Layout */
+.app-layout {
+  background-color: #cfdec7; /* Set website background color */
+  min-height: 100vh;
+}
+
+/* Navbar */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #648950; /* Navbar background */
+  padding: 0 20px;
+  border-bottom: 1px solid #ddd;
+  color: white !important;
+}
+
+.app-logo {
+  float: left;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 64px;
+}
+
+.app-menu {
+  float: right;
+}
+
+.app-menu .ant-menu-item {
+  font-weight: 500;
+  color: black;
+}
+
+/* Content Section */
+.app-content {
+  padding: 20px 50px;
+}
+
+/* Welcome Banner */
+.app-banner {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.app-banner-title {
+  color: black;
+}
+
+.app-banner-subtitle {
+  color: black;
+  font-size: 16px;
+}
+
+/* Cards Section */
+.app-cards {
+  margin-bottom: 20px;
+}
+
+.app-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 10px;
+}
+
+.card-image {
+  width: 250px;
+  height: auto;
+  margin: 10px auto;
+  display: block;
+}
+
+.app-card:hover {
+  border-color: #c1d3b5; /* Change border on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Calendar Section */
+.app-calendar {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.app-calendar-title {
+  text-align: center;
+  color: black;
+  margin-bottom: 20px;
+}
+
+/* index.css or any global CSS file */
+.ant-btn-primary {
+  background-color: #cfdec7 !important; /* Set the background color */
+  border-color: #cfdec7 !important; /* Match the border color */
+  color: black !important; /* Set the text color */
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  background-color: #c1d3b5 !important; /* Slightly darker shade for hover/focus */
+  border-color: #c1d3b5 !important;
+  color: black !important; /* Text color remains the same */
+}

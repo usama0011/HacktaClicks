@@ -1,0 +1,78 @@
+.folderpreview-container {
+  padding: 40px 20px;
+  background: #f9f9fb;
+  min-height: 100vh;
+}
+
+.folderpreview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.folderpreview-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+.folderpreview-back {
+  background-color: #7a5af8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+}
+
+.folderpreview-back:hover {
+  background-color: #5a3af8;
+}
+
+.folderpreview-image-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+}
+
+.folderpreview-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.folderpreview-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.folderpreview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 8px;
+}
+
+.folderpreview-image-wrapper:hover .folderpreview-overlay {
+  opacity: 1;
+}
+
+.folderpreview-image-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-top: 8px;
+}

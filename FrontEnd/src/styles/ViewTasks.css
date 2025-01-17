@@ -1,0 +1,52 @@
+/* General Container */
+.viewtasks-container {
+  padding: 40px 20px;
+  background: #f9f9fb;
+  text-align: center;
+  min-height: 100vh;
+}
+
+/* Title and Subtitle */
+.viewtasks-title {
+  font-size: 32px;
+  color: #1f1f1f;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.viewtasks-subtitle {
+  font-size: 16px;
+  color: #555555;
+  margin-bottom: 40px;
+}
+
+/* Folder Cards */
+.viewtasks-folder {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.viewtasks-folder:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Folder Icon */
+.viewtasks-folder-icon {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Folder Name */
+.viewtasks-folder-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333333;
+}

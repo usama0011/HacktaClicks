@@ -90,7 +90,17 @@ const Signup = () => {
             >
               <Input.Password placeholder="Enter your password" />
             </Form.Item>
-
+            <Form.Item
+              label="Shift"
+              name="shift"
+              rules={[{ required: true, message: "Please select a shift!" }]}
+            >
+              <Select placeholder="Select a shift">
+                <Option value="morning">Morning</Option>
+                <Option value="evening">Evening</Option>
+                <Option value="night">Night</Option>
+              </Select>
+            </Form.Item>
             <Form.Item
               label="Role"
               name="role"

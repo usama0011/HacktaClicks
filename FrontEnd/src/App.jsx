@@ -1,5 +1,14 @@
 import React from "react";
-import { Layout, Menu, Card, Col, Row, Calendar, Typography } from "antd";
+import {
+  Layout,
+  Menu,
+  Card,
+  Col,
+  Row,
+  Calendar,
+  Typography,
+  Button,
+} from "antd";
 import {
   UserOutlined,
   FolderOutlined,
@@ -7,16 +16,25 @@ import {
   CheckSquareOutlined,
   FolderAddOutlined,
   UploadOutlined,
+  UserSwitchOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
+import { Link, useNavigate } from "react-router-dom";
 import "./App.css";
-import { Link } from "react-router-dom";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const App = () => {
+  const navigate = useNavigate();
+
   const onPanelChange = (value, mode) => {
     console.log(value.format("YYYY-MM-DD"), mode);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear(); // Clear all data from localStorage
+    navigate("/login"); // Redirect to login page
   };
 
   return (
@@ -38,6 +56,25 @@ const App = () => {
           </Menu.Item>
           <Menu.Item key="3" icon={<CalendarOutlined />}>
             Calendar
+          </Menu.Item>
+          <Menu.Item key="4" icon={<UserSwitchOutlined />}>
+            <Link to="/UpdateUser">Update User</Link>
+          </Menu.Item>
+          <Menu.Item key="4" icon={<UserSwitchOutlined />}>
+            <Link to="/signup">Sign up</Link>
+          </Menu.Item>
+          <Menu.Item
+            key="5"
+            icon={<LogoutOutlined />}
+            className="logout-menu-item"
+          >
+            <Button
+              type="text"
+              icon={<LogoutOutlined />}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
           </Menu.Item>
         </Menu>
       </Header>

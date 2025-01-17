@@ -36,6 +36,7 @@ router.post("/login", async (req, res) => {
         id: user._id,
         username: user.username,
         role: user.role,
+        shift: user.shift,
       },
     });
   } catch (error) {
@@ -56,36 +57,65 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, shift } = req.body;
 
   try {
+    // Validate the shift field
+    if (!["morning", "evening", "night"].includes(shift)) {
+      return res.status(400).json({ message: "Invalid shift value" });
+    }
+
     // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword, role });
+
+    // Create a new user
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+      role,
+      shift,
+    });
 
     await newUser.save();
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
+    // Check for duplicate username error
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
     res.status(500).json({ message: "Error creating user", error });
   }
 });
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { username, role } = req.body;
+  const { username, role, shift } = req.body;
 
   try {
+    // Validate the shift field
+    if (shift && !["morning", "evening", "night"].includes(shift)) {
+      return res.status(400).json({ message: "Invalid shift value" });
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { username, role },
-      { new: true }
+      { username, role, shift },
+      { new: true, runValidators: true }
     );
+
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
+
     res.status(200).json({ message: "User updated successfully", updatedUser });
   } catch (error) {
+    // Check for duplicate username error
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
     res.status(500).json({ message: "Failed to update user", error });
   }
 });

@@ -40,6 +40,7 @@ const UpdateUser = () => {
     form.setFieldsValue({
       username: user.username,
       role: user.role,
+      shift: user.shift,
     });
     setIsModalVisible(true);
   };
@@ -78,6 +79,11 @@ const UpdateUser = () => {
       title: "Role",
       dataIndex: "role",
       key: "role",
+    },
+    {
+      title: "Shift",
+      dataIndex: "shift",
+      key: "shift",
     },
     {
       title: "Created At",
@@ -142,6 +148,18 @@ const UpdateUser = () => {
               <Option value="user">User</Option>
               <Option value="admin">Admin</Option>
               <Option value="superadmin">Superadmin</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Shift"
+            name="shift"
+            rules={[{ required: true, message: "Please select a shift!" }]}
+          >
+            <Select placeholder="Select a shift">
+              <Option value="morning">Morning</Option>
+              <Option value="evening">Evening</Option>
+              <Option value="night">Night</Option>
             </Select>
           </Form.Item>
 

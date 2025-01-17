@@ -10,9 +10,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       enum: ["superadmin", "admin", "user"],
     },
+    shift: {
+      type: String,
+      required: true,
+      enum: ["morning", "evening", "night"], // Valid shift options
+    },
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
   }
 );
 

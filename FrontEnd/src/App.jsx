@@ -57,9 +57,7 @@ const App = () => {
           <Menu.Item key="3" icon={<CalendarOutlined />}>
             Calendar
           </Menu.Item>
-          <Menu.Item key="4" icon={<UserSwitchOutlined />}>
-            <Link to="/UpdateUser">Update User</Link>
-          </Menu.Item>
+
           <Menu.Item key="4" icon={<UserSwitchOutlined />}>
             <Link to="/signup">Sign up</Link>
           </Menu.Item>

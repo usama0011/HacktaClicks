@@ -20,7 +20,11 @@ const Login = () => {
       updateUserContext(response.data.user, response.data.token);
 
       // Navigate to the dashboard or desired page after successful login
-      navigate("/");
+      if (response.data.user.role === "user") {
+        navigate("/");
+      } else {
+        navigate("/admindashboard");
+      }
     } catch (error) {
       message.error(error.response?.data?.message || "Login failed");
     } finally {

@@ -1,7 +1,7 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Input, Form, Checkbox, message } from "antd";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../components/BaseURL"; // Import the configured axios instance
 import "../styles/Login.css";
 import { useUserContext } from "../context/UserContext";
@@ -102,7 +102,7 @@ const Login = () => {
               </Button>
             </Form>
             <div className="login-signup-link">
-              Don’t have an account? <a href="/signup">Sign Up</a>
+              Don’t have an account? <Link to="/signup">Sign up</Link>
             </div>
           </div>
         </div>

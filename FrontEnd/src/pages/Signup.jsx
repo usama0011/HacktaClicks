@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Input, Button, Modal, message, Select } from "antd";
 import axiosInstance from "../components/BaseURL"; // Import Axios instance
 import "../styles/Signup.css";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false);
@@ -121,9 +122,9 @@ const Signup = () => {
           <div className="signup-login-redirect">
             <p>
               Already have an account?{" "}
-              <a href="/login" className="signup-login-link">
-                Log In
-              </a>
+              <Link to="/login" className="signup-login-link">
+                login
+              </Link>
             </p>
           </div>
         </div>

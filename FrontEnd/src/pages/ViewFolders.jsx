@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Row, Col, Card, Typography, message, Spin } from "antd";
-import { FolderFilled } from "@ant-design/icons";
+import { Row, Col, Card, Typography, message, Spin, Tooltip } from "antd";
+import {
+  FolderFilled,
+  FileAddOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import axiosInstance from "../components/BaseURL"; // Import Axios Instance
 import "../styles/ViewTasks.css";
 
@@ -51,6 +55,7 @@ const ViewFolders = () => {
       <p className="viewtasks-subtitle">
         Easily access and manage your tasks organized by date.
       </p>
+
       <Row gutter={[24, 24]} justify="center">
         {folders.length > 0 ? (
           folders.map((folder) => (
@@ -58,11 +63,11 @@ const ViewFolders = () => {
               <Card
                 className="viewtasks-folder"
                 hoverable
-                onDoubleClick={() => handleDoubleClick(folder.date)}
+                onClick={() => handleDoubleClick(folder.date)}
               >
                 <div className="viewtasks-folder-icon">
                   <FolderFilled
-                    style={{ fontSize: "64px", color: "#43e97b" }}
+                    style={{ fontSize: "64px", color: "#658951" }}
                   />
                 </div>
                 <Text className="viewtasks-folder-name">{folder.date}</Text>

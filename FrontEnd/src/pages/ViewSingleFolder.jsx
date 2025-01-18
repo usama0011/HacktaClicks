@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { Row, Col, Card, Image, Spin, Typography, message } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
 import axiosInstance from "../components/BaseURL";
+import { PictureOutlined, FolderOutlined } from "@ant-design/icons";
+
 import "../styles/ViewImages.css";
 
 const { Title } = Typography;
@@ -83,9 +85,52 @@ const ViewImages = () => {
 
   return (
     <div className="viewimages-container">
-      <Title level={2} className="viewimages-title">
-        Images from {folderName}
-      </Title>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        {/* Left Side: Image Count with Icon */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <PictureOutlined
+            style={{ color: "#658951", fontSize: "24px", marginRight: "8px" }}
+          />
+          <span
+            style={{
+              color: "#658951",
+              fontWeight: "bold",
+              fontSize: "27px",
+              textDecoration: "underline",
+              marginRight: "8px",
+            }}
+          >
+            {images?.length}
+          </span>
+          <span style={{ color: "#555", fontSize: "24px" }}>Images</span>
+        </div>
+
+        {/* Right Side: Folder Name with Icon */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FolderOutlined
+            style={{ color: "#658951", fontSize: "24px", marginRight: "8px" }}
+          />
+          <span
+            style={{
+              color: "#658951",
+              fontWeight: "bold",
+              fontSize: "27px",
+              textDecoration: "underline",
+              marginRight: "8px",
+            }}
+          >
+            {folderName}
+          </span>
+          <span style={{ color: "#555", fontSize: "24px" }}>Folder</span>
+        </div>
+      </div>
       <Row gutter={[16, 16]} justify="start">
         {images.map((image) => (
           <Col xs={24} sm={12} md={8} lg={6} key={image._id}>

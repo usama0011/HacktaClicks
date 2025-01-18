@@ -6,6 +6,7 @@
 .overview-title {
   text-align: center;
   margin-bottom: 24px;
+  color: #00bba6 !important;
 }
 
 .overview-card {
@@ -18,7 +19,7 @@
 
 .overview-icon {
   font-size: 36px;
-  color: #1890ff;
+  color: #00bba6;
   margin-bottom: 8px;
 }
 
@@ -31,7 +32,7 @@
 .overview-card-value {
   font-size: 24px;
   font-weight: bold;
-  color: #4caf50;
+  color: #00bba6;
 }
 
 .overview-breakdown {

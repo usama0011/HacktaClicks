@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../models/User.js"; // Assuming the model is in ../models/User.js
+import TaskUpload from "../models/TaskUpload.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 const router = express.Router();
@@ -53,6 +54,49 @@ router.get("/:id", async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user", error });
+  }
+});
+// Get user statistics by shift
+router.get("/stats/users", async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const morningUsers = await User.countDocuments({ shift: "morning" });
+    const eveningUsers = await User.countDocuments({ shift: "evening" });
+    const nightUsers = await User.countDocuments({ shift: "night" });
+
+    res.status(200).json({
+      totalUsers,
+      morningUsers,
+      eveningUsers,
+      nightUsers,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user stats", error });
+  }
+});
+
+// Get screenshot statistics by shift
+router.get("/stats/screenshots", async (req, res) => {
+  try {
+    const totalScreenshots = await TaskUpload.countDocuments();
+    const morningScreenshots = await TaskUpload.countDocuments({
+      shift: "morning",
+    });
+    const eveningScreenshots = await TaskUpload.countDocuments({
+      shift: "evening",
+    });
+    const nightScreenshots = await TaskUpload.countDocuments({
+      shift: "night",
+    });
+
+    res.status(200).json({
+      totalScreenshots,
+      morningScreenshots,
+      eveningScreenshots,
+      nightScreenshots,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching screenshot stats", error });
   }
 });
 

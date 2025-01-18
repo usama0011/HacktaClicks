@@ -12,7 +12,7 @@ const app = express();
 
 // Define the CORS options
 const corsOptions = {
-  origin: ["https://hackta-clicks.vercel.app", "http://localhost:5173"], // Replace with your frontend URL
+  origin: ["https://hackta-clicks.vercel.app", "http://localhost:5174"], // Replace with your frontend URL
   credentials: true, // Allow cookies and other credentials to be sent
   methods: ["GET", "POST", "PUT", "DELETE"], // Allow necessary methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers

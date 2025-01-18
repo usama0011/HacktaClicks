@@ -94,17 +94,3 @@
   color: black;
   margin-bottom: 20px;
 }
-
-/* index.css or any global CSS file */
-.ant-btn-primary {
-  background-color: #cfdec7 !important; /* Set the background color */
-  border-color: #cfdec7 !important; /* Match the border color */
-  color: black !important; /* Set the text color */
-}
-
-.ant-btn-primary:hover,
-.ant-btn-primary:focus {
-  background-color: #c1d3b5 !important; /* Slightly darker shade for hover/focus */
-  border-color: #c1d3b5 !important;
-  color: black !important; /* Text color remains the same */
-}

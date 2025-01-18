@@ -107,7 +107,16 @@ const UserFolder = () => {
 
   return (
     <div className="userfolder-container">
-      <Title level={2}>Manage Folders</Title>
+      <Title
+        style={{
+          textAlign: "center",
+          color: "#00bba6",
+          textDecoration: "underline",
+        }}
+        level={2}
+      >
+        Manage Folders
+      </Title>
       <Row gutter={[16, 16]} justify="start">
         {folders.length > 0 ? (
           folders.map((folder) => (
@@ -118,13 +127,22 @@ const UserFolder = () => {
                   onChange={() => handleSelectFolder(folder.date)}
                   className="userfolder-checkbox"
                 />
-                <FolderOpenOutlined className="userfolder-folder-icon" />
-                <Text
-                  onClick={() => handleFolderClick(folder)}
-                  className="userfolder-folder-name"
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
                 >
-                  {folder.date}
-                </Text>
+                  <FolderOpenOutlined className="userfolder-folder-icon" />
+                  <Text
+                    style={{ textDecoration: "underline" }}
+                    onClick={() => handleFolderClick(folder)}
+                    className="userfolder-folder-name"
+                  >
+                    {folder.date}
+                  </Text>
+                </div>
               </Card>
             </Col>
           ))

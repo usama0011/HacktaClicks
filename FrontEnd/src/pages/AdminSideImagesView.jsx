@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Row, Col, Card, Image, Spin, Typography, message } from "antd";
 import { CalendarOutlined } from "@ant-design/icons";
+import { PictureOutlined, FolderOutlined } from "@ant-design/icons";
+
 import axiosInstance from "../components/BaseURL";
 import "../styles/ViewImages.css";
 
@@ -10,7 +12,6 @@ const { Title } = Typography;
 const AdminSideImagesView = () => {
   const { userId, folderDate } = useParams(); // Extract userId and folderDate from params
   console.log(userId, folderDate);
-  const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,9 +65,52 @@ const AdminSideImagesView = () => {
 
   return (
     <div className="viewimages-container">
-      <Title level={2} className="viewimages-title">
-        Images from {folderDate}
-      </Title>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        {/* Left Side: Image Count with Icon */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <PictureOutlined
+            style={{ color: "#00bba6", fontSize: "24px", marginRight: "8px" }}
+          />
+          <span
+            style={{
+              color: "#00bba6",
+              fontWeight: "bold",
+              fontSize: "27px",
+              textDecoration: "underline",
+              marginRight: "8px",
+            }}
+          >
+            {images?.length}
+          </span>
+          <span style={{ color: "#00bba6", fontSize: "24px" }}>Images</span>
+        </div>
+
+        {/* Right Side: Folder Name with Icon */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FolderOutlined
+            style={{ color: "#00bba6", fontSize: "24px", marginRight: "8px" }}
+          />
+          <span
+            style={{
+              color: "#00bba6",
+              fontWeight: "bold",
+              fontSize: "27px",
+              textDecoration: "underline",
+              marginRight: "8px",
+            }}
+          >
+            {folderDate}
+          </span>
+          <span style={{ color: "#00bba6", fontSize: "24px" }}>Folder</span>
+        </div>
+      </div>
       <Row gutter={[16, 16]} justify="start">
         {images.map((image) => (
           <Col xs={24} sm={12} md={8} lg={6} key={image._id}>
@@ -91,11 +135,11 @@ const AdminSideImagesView = () => {
                 <CalendarOutlined
                   style={{
                     marginRight: "8px",
-                    color: "#1890ff", // Use a primary color for the icon
+                    color: "#00bba6", // Use a primary color for the icon
                     fontSize: "16px", // Slightly larger icon for better visibility
                   }}
                 />
-                <div style={{ fontStyle: "italic" }}>
+                <div style={{ fontStyle: "italic", color: "#333" }}>
                   {formatDateTime(image.createdAt)}
                 </div>
               </div>

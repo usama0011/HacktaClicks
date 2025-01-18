@@ -34,7 +34,7 @@ const AdminDashboard = () => {
       >
         <div className="admin-logo">Admin Panel</div>
         <Menu
-          className="custom-menu"
+          className="custom-admin-menu"
           theme="dark"
           mode="inline"
           defaultSelectedKeys={["1"]}
@@ -61,19 +61,13 @@ const AdminDashboard = () => {
             </Link>
           </Menu.Item>
           <Menu.Item key="4" icon={<UploadOutlined />}>
-            <Link className="customlinkfontsize" to="/admindashboard/uploads">
-              Uploads
-            </Link>
+            <Link className="customlinkfontsize">Uploads</Link>
           </Menu.Item>
           <Menu.Item key="5" icon={<BarChartOutlined />}>
-            <Link className="customlinkfontsize" to="/admindashboard/reports">
-              Reports
-            </Link>
+            Reports
           </Menu.Item>
           <Menu.Item key="6" icon={<SettingOutlined />}>
-            <Link className="customlinkfontsize" to="/admindashboard/settings">
-              Settings
-            </Link>
+            <Link className="customlinkfontsize">Settings</Link>
           </Menu.Item>
         </Menu>
       </Sider>
@@ -85,6 +79,7 @@ const AdminDashboard = () => {
           <div className="header-content">
             <span className="header-title">Admin Panel</span>
             <Button
+              style={{ color: "#00bba6", backgroundColor: "white" }}
               type="primary"
               icon={<LogoutOutlined />}
               onClick={handleLogout}

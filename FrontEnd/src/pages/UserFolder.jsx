@@ -9,6 +9,7 @@ import {
   Button,
   Modal,
   Spin,
+  Input,
   message,
 } from "antd";
 import { DeleteOutlined, FolderOpenOutlined } from "@ant-design/icons";
@@ -19,15 +20,19 @@ const { Title, Text } = Typography;
 
 const UserFolder = () => {
   const { userId } = useParams(); // Get userId from URL params
-  console.log(userId);
   const navigate = useNavigate();
 
   const [folders, setFolders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedFolders, setSelectedFolders] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false);
+  const [password, setPassword] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
+  const correctPassword = "muix@123";
+
+  // Fetch folders from the API
   const fetchFolders = async () => {
     try {
       const response = await axiosInstance.get(
@@ -59,22 +64,39 @@ const UserFolder = () => {
     );
   };
 
-  const handleDelete = () => {
-    if (deleteTarget) {
-      console.log(`Deleting folder: ${deleteTarget}`);
-    } else {
-      console.log("Deleting selected folders:", selectedFolders);
+  const handleDelete = async () => {
+    setDeleteLoading(true);
+    try {
+      const response = await axiosInstance.delete(
+        `/taskupload/user/${userId}/folders`,
+        { data: { dates: selectedFolders } }
+      );
+      message.success(response.data.message);
+      fetchFolders(); // Refresh folders after deletion
+    } catch (error) {
+      message.error("Failed to delete folders.");
+    } finally {
+      setDeleteLoading(false);
+      setIsPasswordModalVisible(false);
+      setSelectedFolders([]);
+      setPassword(""); // Reset password input
     }
-    setIsModalVisible(false);
-    setSelectedFolders([]);
-    setDeleteTarget(null);
   };
 
-  const confirmDelete = (folderDate) => {
-    setDeleteTarget(folderDate);
-    setIsModalVisible(true);
+  const confirmDelete = () => {
+    setIsPasswordModalVisible(true);
   };
-  console.log(folders);
+
+  const handlePasswordSubmit = () => {
+    if (password === correctPassword) {
+      message.success("Password verified successfully!");
+      setIsPasswordModalVisible(false);
+      setIsModalVisible(true); // Show deletion confirmation modal
+    } else {
+      message.error("Incorrect password. Please try again.");
+    }
+  };
+
   if (loading) {
     return (
       <div className="userfolder-loading">
@@ -85,61 +107,73 @@ const UserFolder = () => {
 
   return (
     <div className="userfolder-container">
-      <Title level={2} className="userfolder-title">
-        User ID: {userId}
-      </Title>
+      <Title level={2}>Manage Folders</Title>
       <Row gutter={[16, 16]} justify="start">
         {folders.length > 0 ? (
           folders.map((folder) => (
             <Col xs={24} sm={12} md={8} lg={6} key={folder.date}>
-              <Card
-                className="userfolder-folder-card"
-                hoverable
-                onClick={() => handleFolderClick(folder)}
-              >
+              <Card className="userfolder-folder-card" hoverable>
                 <Checkbox
                   checked={selectedFolders.includes(folder.date)}
                   onChange={() => handleSelectFolder(folder.date)}
                   className="userfolder-checkbox"
                 />
                 <FolderOpenOutlined className="userfolder-folder-icon" />
-                <Text className="userfolder-folder-name">{folder.date}</Text>
-                <Button
-                  type="text"
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={() => confirmDelete(folder.date)}
+                <Text
+                  onClick={() => handleFolderClick(folder)}
+                  className="userfolder-folder-name"
                 >
-                  Delete
-                </Button>
+                  {folder.date}
+                </Text>
               </Card>
             </Col>
           ))
         ) : (
-          <Text className="userfolder-no-folders">
-            No folders available for this user.
-          </Text>
+          <Text>No folders available for this user.</Text>
         )}
       </Row>
       <Button
         type="primary"
         danger
         disabled={selectedFolders.length === 0}
-        onClick={() => setIsModalVisible(true)}
+        onClick={confirmDelete}
         className="userfolder-delete-selected"
       >
         Delete Selected
       </Button>
 
+      {/* Password Modal */}
+      <Modal
+        title="Enter Password"
+        visible={isPasswordModalVisible}
+        onOk={handlePasswordSubmit}
+        onCancel={() => {
+          setIsPasswordModalVisible(false);
+          setPassword(""); // Reset password input
+        }}
+        okText="Submit"
+        cancelText="Cancel"
+      >
+        <Input.Password
+          placeholder="Enter your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </Modal>
+
+      {/* Deletion Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         visible={isModalVisible}
         onOk={handleDelete}
         onCancel={() => setIsModalVisible(false)}
+        confirmLoading={deleteLoading}
+        okText="Delete"
+        cancelText="Cancel"
       >
         <p>
-          Are you sure you want to delete
-          {deleteTarget ? ` folder: ${deleteTarget}` : " the selected folders"}?
+          Are you sure you want to delete the selected folders? This action
+          cannot be undone.
         </p>
       </Modal>
     </div>

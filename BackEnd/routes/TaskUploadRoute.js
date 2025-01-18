@@ -2,7 +2,12 @@
 import express from "express";
 import TaskUpload from "../models/TaskUpload.js"; // Assuming the model is in ../models/TaskUpload.js
 import mongoose from "mongoose";
-
+import cloudinary from "cloudinary";
+cloudinary.config({
+  cloud_name: "dovmnsimj",
+  api_key: "812677675493278",
+  api_secret: "iwGc-OeoVaz3dPRxo0xXwLurKhw",
+});
 const router = express.Router();
 
 // Get all task uploads
@@ -32,16 +37,18 @@ router.get("/user/:userId/folders", async (req, res) => {
       },
       {
         $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, // Group by date
+          imageurl: { $first: "$imageurl" }, // Get the first imageurl in each group
         },
       },
-      { $sort: { _id: -1 } },
+      { $sort: { _id: -1 } }, // Sort by date descending
     ]);
 
     res.status(200).json(
       folders.map((folder) => ({
         date: folder._id, // Date from aggregation
         userId: userId, // Include userId from request
+        imageurl: folder.imageurl, // Include imageurl from aggregation
       }))
     );
   } catch (error) {
@@ -86,6 +93,7 @@ router.get("/user/:userId/folder/:date", async (req, res) => {
 });
 
 // Get all users with their userId and username
+// Get all users with their userId, username, and shift
 router.get("/users", async (req, res) => {
   try {
     const users = await TaskUpload.aggregate([
@@ -93,12 +101,14 @@ router.get("/users", async (req, res) => {
         $group: {
           _id: "$userId", // Group by userId
           username: { $first: "$username" }, // Get the first username for each userId
+          shift: { $first: "$shift" }, // Get the first shift for each userId
         },
       },
       {
         $project: {
           userId: "$_id", // Rename _id to userId
           username: 1, // Include the username
+          shift: 1, // Include the shift
           _id: 0, // Exclude the original _id field
         },
       },
@@ -158,15 +168,51 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Delete a task by ID
-router.delete("/:id", async (req, res) => {
+router.delete("/user/:userId/folders", async (req, res) => {
+  const { userId } = req.params;
+  const { dates } = req.body; // Array of selected dates to delete
+
   try {
-    const deletedTask = await TaskUpload.findByIdAndDelete(req.params.id);
-    if (!deletedTask)
-      return res.status(404).json({ message: "Task not found" });
-    res.status(200).json({ message: "Task deleted successfully" });
+    if (!mongoose.isValidObjectId(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    // Find all matching records for the user and selected dates
+    const recordsToDelete = await TaskUpload.find({
+      userId: new mongoose.Types.ObjectId(userId),
+      createdAt: {
+        $gte: new Date(dates[0]),
+        $lt: new Date(dates[dates.length - 1] + "T23:59:59.999Z"),
+      },
+    });
+
+    if (recordsToDelete.length === 0) {
+      return res.status(404).json({ message: "No records found to delete" });
+    }
+
+    // Remove images from Cloudinary
+    for (const record of recordsToDelete) {
+      await cloudinary.uploader.destroy(
+        record.imageurl.split("/").pop().split(".")[0]
+      );
+    }
+
+    // Remove records from database
+    await TaskUpload.deleteMany({
+      userId: new mongoose.Types.ObjectId(userId),
+      createdAt: {
+        $gte: new Date(dates[0]),
+        $lt: new Date(dates[dates.length - 1] + "T23:59:59.999Z"),
+      },
+    });
+
+    res
+      .status(200)
+      .json({ message: "Folders and images deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting task", error });
+    res
+      .status(500)
+      .json({ message: "Error deleting folders", error: error.message });
   }
 });
 

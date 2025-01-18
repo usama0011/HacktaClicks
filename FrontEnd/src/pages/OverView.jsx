@@ -53,7 +53,10 @@ const OverView = () => {
             <Title level={4} className="overview-card-title">
               Total Users
             </Title>
-            <Text className="overview-card-value">{userStats.totalUsers}</Text>
+            <Text className="overview-card-value">
+              {userStats.totalUsers?.toLocaleString()}
+            </Text>
+
             <div className="overview-breakdown">
               <div className="overview-breakdown-item">
                 <img
@@ -67,7 +70,8 @@ const OverView = () => {
                     backgroundSize: "cover",
                   }}
                 />
-                Morning: {userStats.morningUsers}
+                <span style={{ fontWeight: "bold" }}> Morning:</span>
+                {userStats.morningUsers}
               </div>
               <div className="overview-breakdown-item">
                 <img
@@ -81,7 +85,8 @@ const OverView = () => {
                     backgroundSize: "cover",
                   }}
                 />
-                Evening: {userStats.eveningUsers}
+                <span style={{ fontWeight: "bold" }}> Evening:</span>{" "}
+                {userStats.eveningUsers}
               </div>
               <div className="overview-breakdown-item">
                 <img
@@ -95,7 +100,8 @@ const OverView = () => {
                     backgroundSize: "cover",
                   }}
                 />
-                Night: {userStats.nightUsers}
+                <span style={{ fontWeight: "bold" }}> Night:</span>{" "}
+                {userStats.nightUsers}
               </div>
             </div>
           </Card>
@@ -109,7 +115,7 @@ const OverView = () => {
               Screenshots Taken
             </Title>
             <Text className="overview-card-value">
-              {screenshotStats.totalScreenshots}
+              {screenshotStats?.totalScreenshots.toLocaleString()}
             </Text>
             <div className="overview-breakdown">
               <div className="overview-breakdown-item">
@@ -124,7 +130,8 @@ const OverView = () => {
                     backgroundSize: "cover",
                   }}
                 />
-                Morning: {screenshotStats.morningScreenshots}
+                <span style={{ fontWeight: "bold" }}> Morning:</span>{" "}
+                {screenshotStats.morningScreenshots}
               </div>
               <div className="overview-breakdown-item">
                 <img
@@ -138,7 +145,8 @@ const OverView = () => {
                     backgroundSize: "cover",
                   }}
                 />
-                Evening: {screenshotStats.eveningScreenshots}
+                <span style={{ fontWeight: "bold" }}> Evening:</span>{" "}
+                {screenshotStats.eveningScreenshots}
               </div>
               <div className="overview-breakdown-item">
                 <img
@@ -152,7 +160,8 @@ const OverView = () => {
                     backgroundSize: "cover",
                   }}
                 />
-                Night: {screenshotStats.nightScreenshots}
+                <span style={{ fontWeight: "bold" }}> Night:</span>{" "}
+                {screenshotStats.nightScreenshots}
               </div>
             </div>
           </Card>

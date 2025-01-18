@@ -10,9 +10,7 @@ import {
   Button,
 } from "antd";
 import {
-  UserOutlined,
   FolderOutlined,
-  CalendarOutlined,
   CheckSquareOutlined,
   FolderAddOutlined,
   UploadOutlined,
@@ -40,33 +38,53 @@ const App = () => {
   return (
     <Layout className="app-layout">
       {/* Navbar */}
-      <Header className="app-header">
-        <div className="app-logo">Hackta Connect</div>
+      <Header
+        className="app-header"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <div
+          className="app-logo"
+          style={{ color: "white", fontSize: "1.5rem", fontWeight: "bold" }}
+        >
+          Hackta Connect
+        </div>
         <Menu
           theme="light"
           mode="horizontal"
+          style={{
+            backgroundColor: "transparent",
+            flexGrow: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
           defaultSelectedKeys={["1"]}
           className="app-menu"
         >
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            Dashboard
-          </Menu.Item>
-          <Menu.Item key="2" icon={<FolderOutlined />}>
-            <Link to="/viewfolders">My Folders</Link>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<CalendarOutlined />}>
-            Calendar
+          <Menu.Item
+            key="2"
+            icon={<FolderOutlined style={{ color: "white" }} />}
+          >
+            <Link to="/viewfolders" style={{ color: "white" }}>
+              My Folders
+            </Link>
           </Menu.Item>
 
-          <Menu.Item key="4" icon={<UserSwitchOutlined />}>
-            <Link to="/signup">Sign up</Link>
-          </Menu.Item>
           <Menu.Item
-            key="5"
-            icon={<LogoutOutlined />}
-            className="logout-menu-item"
+            style={{ color: "white" }}
+            key="4"
+            icon={<UserSwitchOutlined />}
           >
+            <Link to="/signup" style={{ color: "white" }}>
+              Sign up
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="5" className="logout-menu-item">
             <Button
+              style={{ color: "white" }}
               type="text"
               icon={<LogoutOutlined />}
               onClick={handleLogout}

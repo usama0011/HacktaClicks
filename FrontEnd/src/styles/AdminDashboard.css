@@ -5,7 +5,7 @@
 }
 
 .admin-dashboard-sider {
-  background: #001529;
+  background: #00bba6;
   height: 100vh; /* Full height to match the viewport */
   position: fixed; /* Fix the sidebar position */
   top: 0;
@@ -35,7 +35,7 @@
 }
 
 .admin-dashboard-header {
-  background: #001529;
+  background: #00bba6;
   color: white;
   position: sticky;
   top: 0;
@@ -44,7 +44,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #f0f0f0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow at the bottom */
 }
 
@@ -53,17 +52,6 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-}
-
-.logout-button {
-  background-color: #ff4d4f;
-  color: #ffffff;
-  border: none;
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #d9363e;
 }
 
 .ant-menu-item {
@@ -81,10 +69,25 @@
   font-size: 16px;
 }
 
-.ant-menu-item:hover a {
-  color: #ffffff !important;
-}
-
 .ant-menu-item .anticon {
   margin-right: 8px;
+}
+
+.custom-admin-menu {
+  background-color: #00bba6; /* Menu background */
+}
+
+.custom-admin-menu .ant-menu-item {
+  color: #fff; /* Default text color */
+}
+
+.custom-admin-menu .ant-menu-item-selected {
+  background-color: white !important; /* Active item background */
+  color: black !important; /* Active item text color */
+}
+
+.custom-admin-menu .customlinkfontsize {
+  font-size: 16px; /* Adjust font size */
+  color: inherit; /* Inherit text color */
+  text-decoration: none; /* Remove underline */
 }

@@ -194,7 +194,7 @@ const UpdateUser = () => {
             disabled={record.role === "superadmin"}
             type="link"
             onClick={() => handleEdit(record)}
-            style={{ marginRight: "8px" }}
+            style={{ marginRight: "8px", color: "#00bba6" }}
           >
             Edit
           </Button>
@@ -250,7 +250,12 @@ const UpdateUser = () => {
           </Select>
         </Col>
         <Col xs={24} sm={8} md={6}>
-          <Button type="primary" onClick={handleFilter} block>
+          <Button
+            type="primary"
+            style={{ backgroundColor: "#00bba6" }}
+            onClick={handleFilter}
+            block
+          >
             Apply Filters
           </Button>
         </Col>

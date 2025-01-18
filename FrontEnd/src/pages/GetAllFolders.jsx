@@ -17,6 +17,7 @@ import {
   DeleteOutlined,
   FolderOpenOutlined,
   SearchOutlined,
+  FolderOutlined,
 } from "@ant-design/icons";
 import axiosInstance from "../components/BaseURL";
 import "../styles/GetAllFolders.css";
@@ -108,8 +109,18 @@ const GetAllFolders = () => {
 
   return (
     <div className="getallfolders-container">
-      <Title level={2} className="getallfolders-title">
-        Admin: All Folders
+      <Title
+        level={2}
+        className="getallfolders-title"
+        style={{ color: "#00bba6" }}
+      >
+        <FolderOutlined style={{ color: "#00bba6" }} /> Admin: All Folders{" "}
+        <span
+          className="folder-count"
+          style={{ color: "#00bba6", textDecoration: "underline" }}
+        >
+          (Total: {folders?.length})
+        </span>
       </Title>
 
       {/* Filters */}
@@ -136,7 +147,12 @@ const GetAllFolders = () => {
           </Select>
         </Col>
         <Col xs={24} sm={12} md={8}>
-          <Button type="primary" onClick={handleSearch} block>
+          <Button
+            type="primary"
+            style={{ backgroundColor: "#00bba6" }}
+            onClick={handleSearch}
+            block
+          >
             Search
           </Button>
         </Col>

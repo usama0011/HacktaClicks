@@ -1,45 +1,91 @@
+/* UpdateUser.css */
+
+/* General container styling */
 .updateuser-container {
-  padding: 40px 20px;
-  background-color: #cfdec7; /* Updated background color */
+  padding: 20px;
+  background-color: #f9f9f9;
   min-height: 100vh;
 }
 
+/* Page title */
 .updateuser-title {
-  text-align: center;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
-  color: black; /* Updated text color */
   margin-bottom: 20px;
 }
 
+/* Filters row styling */
+.updateuser-filters {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter input and select fields */
+.updateuser-filters .ant-input,
+.updateuser-filters .ant-select {
+  width: 100%;
+}
+
+/* Filter button */
+.updateuser-filters .ant-btn {
+  width: 100%;
+}
+
+/* Table styling */
 .updateuser-table {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table row hover effect */
+.updateuser-table .ant-table-row:hover {
+  background-color: #e6f7ff;
+}
+
+/* Modal styling */
+.updateuser-modal {
+  border-radius: 8px;
 }
 
 .updateuser-modal .ant-modal-content {
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
-.updateuser-form {
-  padding: 10px;
-}
-
+/* Form in the modal */
 .updateuser-form .ant-form-item {
   margin-bottom: 16px;
 }
 
 .updateuser-form .ant-btn-primary {
-  background-color: #cfdec7; /* Updated primary button color */
-  border-color: #cfdec7;
-  font-weight: 500;
-  color: black; /* Updated button text color */
+  background-color: #1890ff;
+  border: none;
+  transition: background-color 0.3s ease;
 }
 
 .updateuser-form .ant-btn-primary:hover {
-  background-color: #c1d3b5; /* Slightly darker shade on hover */
-  border-color: #c1d3b5;
-  color: black; /* Maintain text color on hover */
+  background-color: #40a9ff;
+}
+
+/* Icons */
+.updateuser-table .anticon {
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.updateuser-table .ant-btn-link {
+  font-size: 14px;
+}
+
+/* Delete button */
+.updateuser-table .ant-btn-danger {
+  color: #ff4d4f;
+}
+
+.updateuser-table .ant-btn-danger:hover {
+  color: #d9363e;
 }

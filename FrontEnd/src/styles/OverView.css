@@ -1,0 +1,67 @@
+.overview-container {
+  padding: 24px;
+  background-color: #f9f9f9;
+}
+
+.overview-title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.overview-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 16px;
+}
+
+.overview-icon {
+  font-size: 36px;
+  color: #1890ff;
+  margin-bottom: 8px;
+}
+
+.overview-card-title {
+  font-size: 18px;
+  color: #333333;
+  margin: 8px 0;
+}
+
+.overview-card-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.overview-breakdown {
+  margin-top: 16px;
+}
+
+.overview-breakdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555555;
+}
+
+.overview-icon.morning {
+  color: #ff9800;
+}
+
+.overview-icon.evening {
+  color: #3f51b5;
+}
+
+.overview-icon.night {
+  color: #9c27b0;
+}
+
+.overview-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

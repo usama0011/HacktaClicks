@@ -1,3 +1,5 @@
+/* Updated GetAllFolders.css */
+
 .getallfolders-container {
   padding: 40px 20px;
   background-color: #f9f9fb;
@@ -12,16 +14,24 @@
   margin-bottom: 20px;
 }
 
+.getallfolders-filters {
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
 .getallfolders-folder-card {
   border-radius: 10px;
   text-align: center;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  padding: 15px;
 }
 
 .getallfolders-folder-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .getallfolders-checkbox {
@@ -31,8 +41,8 @@
 }
 
 .getallfolders-folder-icon {
-  font-size: 32px;
-  color: #7a5af8;
+  font-size: 40px;
+  color: rgb(10, 176, 10);
   margin-bottom: 10px;
 }
 
@@ -40,8 +50,21 @@
   font-size: 16px;
   font-weight: 500;
   color: #333;
+  margin-bottom: 5px;
+}
+
+.getallfolders-folder-shift {
+  font-size: 14px;
+  color: #666;
 }
 
 .getallfolders-delete-selected {
   margin-top: 20px;
+}
+
+.getallfolders-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }

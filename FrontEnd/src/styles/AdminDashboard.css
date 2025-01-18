@@ -1,10 +1,23 @@
-/* AdminDashboard.css */
 .admin-dashboard-layout {
   min-height: 100vh;
+  display: flex; /* Ensure the layout stays aligned */
+  position: relative;
 }
 
 .admin-dashboard-sider {
   background: #001529;
+  height: 100vh; /* Full height to match the viewport */
+  position: fixed; /* Fix the sidebar position */
+  top: 0;
+  left: 0; /* Position on the left */
+  overflow-y: auto; /* Allow scrolling for long content */
+  width: 200px; /* Match the Ant Design default sider width */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow on the right */
+  z-index: 1000; /* Ensure it appears above content */
+}
+
+.admin-dashboard-layout .ant-layout {
+  margin-left: 200px; /* Match the fixed sidebar width */
 }
 
 .admin-logo {
@@ -17,14 +30,22 @@
   justify-content: center;
   align-items: center;
 }
+.customlinkfontsize {
+  font-size: 14px !important; /* Adjust font size as needed */
+}
 
 .admin-dashboard-header {
-  background: #ffffff;
+  background: #001529;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #f0f0f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow at the bottom */
 }
 
 .admin-dashboard-header .header-content {
@@ -43,15 +64,6 @@
 
 .logout-button:hover {
   background-color: #d9363e;
-}
-
-.admin-dashboard-content {
-  margin: 24px;
-  padding: 24px;
-  background: #ffffff;
-  min-height: 280px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
 }
 
 .ant-menu-item {

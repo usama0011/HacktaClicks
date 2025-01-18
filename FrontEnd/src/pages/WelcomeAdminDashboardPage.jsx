@@ -9,6 +9,7 @@ import {
   SettingOutlined,
   BarChartOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const { Title, Paragraph } = Typography;
 
@@ -23,39 +24,45 @@ const WelcomeAdminDashboardPage = () => {
       </Paragraph>
       <Row gutter={[16, 16]} justify="center">
         <Col xs={24} sm={12} md={8} lg={6}>
-          <Card className="welcome-card" hoverable>
-            <DashboardOutlined className="welcome-card-icon" />
-            <Title level={4} className="welcome-card-title">
-              Overview
-            </Title>
-            <Paragraph className="welcome-card-description">
-              View system metrics and stats.
-            </Paragraph>
-          </Card>
+          <Link to="/admindashboard/overview">
+            <Card className="welcome-card" hoverable>
+              <DashboardOutlined className="welcome-card-icon" />
+              <Title level={4} className="welcome-card-title">
+                Overview
+              </Title>
+              <Paragraph className="welcome-card-description">
+                View system metrics and stats.
+              </Paragraph>
+            </Card>
+          </Link>
         </Col>
 
         <Col xs={24} sm={12} md={8} lg={6}>
-          <Card className="welcome-card" hoverable>
-            <UserOutlined className="welcome-card-icon" />
-            <Title level={4} className="welcome-card-title">
-              Users
-            </Title>
-            <Paragraph className="welcome-card-description">
-              Manage all registered users.
-            </Paragraph>
-          </Card>
+          <Link to="/admindashboard/manageusers">
+            <Card className="welcome-card" hoverable>
+              <UserOutlined className="welcome-card-icon" />
+              <Title level={4} className="welcome-card-title">
+                Users
+              </Title>
+              <Paragraph className="welcome-card-description">
+                Manage all registered users.
+              </Paragraph>
+            </Card>
+          </Link>
         </Col>
 
         <Col xs={24} sm={12} md={8} lg={6}>
-          <Card className="welcome-card" hoverable>
-            <FolderOutlined className="welcome-card-icon" />
-            <Title level={4} className="welcome-card-title">
-              Folders
-            </Title>
-            <Paragraph className="welcome-card-description">
-              Organize and review folders.
-            </Paragraph>
-          </Card>
+          <Link to="/admindashboard/managefolders">
+            <Card className="welcome-card" hoverable>
+              <FolderOutlined className="welcome-card-icon" />
+              <Title level={4} className="welcome-card-title">
+                Folders
+              </Title>
+              <Paragraph className="welcome-card-description">
+                Organize and review folders.
+              </Paragraph>
+            </Card>
+          </Link>
         </Col>
 
         <Col xs={24} sm={12} md={8} lg={6}>

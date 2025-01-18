@@ -17,6 +17,7 @@ import "./index.css";
 import AdminDashboard from "./pages/AdminDashboard";
 import WelcomeAdminDashboardPage from "./pages/WelcomeAdminDashboardPage";
 import AdminSideImagesView from "./pages/AdminSideImagesView";
+import OverView from "./pages/OverView";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, token } = useUserContext();
@@ -108,6 +109,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             {/* Nested Admin Routes */}
             <Route index element={<WelcomeAdminDashboardPage />} />
             <Route path="manageusers" element={<UpdateUser />} />
+            <Route path="overview" element={<OverView />} />
             <Route path="viewfolders/:userId" element={<UserFolder />} />
             <Route
               path="adminside/:userId/folder/:folderDate"

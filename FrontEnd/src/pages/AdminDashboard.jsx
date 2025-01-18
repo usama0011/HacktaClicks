@@ -33,24 +33,47 @@ const AdminDashboard = () => {
         collapsedWidth="80"
       >
         <div className="admin-logo">Admin Panel</div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+        <Menu
+          className="custom-menu"
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+        >
           <Menu.Item key="1" icon={<DashboardOutlined />}>
-            <Link to="/admindashboard">Dashboard</Link>
+            <Link className="customlinkfontsize" to="/admindashboard">
+              Dashboard
+            </Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<UserOutlined />}>
-            <Link to="/admindashboard/manageusers">Manage Users</Link>
+            <Link
+              className="customlinkfontsize"
+              to="/admindashboard/manageusers"
+            >
+              Manage Users
+            </Link>
           </Menu.Item>
           <Menu.Item key="3" icon={<FolderOutlined />}>
-            <Link to="/admindashboard/managefolders">Manage Folders</Link>
+            <Link
+              className="customlinkfontsize"
+              to="/admindashboard/managefolders"
+            >
+              Manage Folders
+            </Link>
           </Menu.Item>
           <Menu.Item key="4" icon={<UploadOutlined />}>
-            <Link to="/admindashboard/uploads">Uploads</Link>
+            <Link className="customlinkfontsize" to="/admindashboard/uploads">
+              Uploads
+            </Link>
           </Menu.Item>
           <Menu.Item key="5" icon={<BarChartOutlined />}>
-            <Link to="/admindashboard/reports">Reports</Link>
+            <Link className="customlinkfontsize" to="/admindashboard/reports">
+              Reports
+            </Link>
           </Menu.Item>
           <Menu.Item key="6" icon={<SettingOutlined />}>
-            <Link to="/admindashboard/settings">Settings</Link>
+            <Link className="customlinkfontsize" to="/admindashboard/settings">
+              Settings
+            </Link>
           </Menu.Item>
         </Menu>
       </Sider>

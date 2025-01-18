@@ -70,11 +70,7 @@ const AdminSideImagesView = () => {
       <Row gutter={[16, 16]} justify="start">
         {images.map((image) => (
           <Col xs={24} sm={12} md={8} lg={6} key={image._id}>
-            <Card
-              className="viewimages-card"
-              hoverable
-              onClick={() => handleImageClick(image._id)}
-            >
+            <Card className="viewimages-card" hoverable>
               <Image
                 src={image.imageurl}
                 alt={`Uploaded by ${image.username}`}

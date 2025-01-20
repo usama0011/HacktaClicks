@@ -75,6 +75,7 @@ const AdminSideImagesView = () => {
       </div>
     );
   }
+  console.log(images);
 
   return (
     <div className="viewimages-container">

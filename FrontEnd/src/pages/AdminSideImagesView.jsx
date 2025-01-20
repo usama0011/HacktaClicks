@@ -1,6 +1,6 @@
 // AdminSideImagesView Component with Next/Previous Buttons
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Row,
   Col,
@@ -70,13 +70,25 @@ const AdminSideImagesView = () => {
 
   if (loading) {
     return (
-      <div className="viewimages-loading">
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          zIndex: 1000,
+        }}
+      >
         <Spin tip="Loading Images..." size="large" />
       </div>
     );
   }
-  console.log(images);
-  //usama Ahmad signure here
+
   return (
     <div className="viewimages-container">
       <div

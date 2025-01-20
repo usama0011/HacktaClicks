@@ -22,12 +22,26 @@ router.get("/", async (req, res) => {
 
 router.get("/user/:userId/folders", async (req, res) => {
   const { userId } = req.params;
+  const { page = 1, limit = 20 } = req.query; // Default to page 1, limit 20
 
   try {
     // Validate userId format
     if (!mongoose.isValidObjectId(userId)) {
       return res.status(400).json({ message: "Invalid user ID" });
     }
+
+    const totalFolders = await TaskUpload.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId), // Convert userId to ObjectId
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, // Group by date
+        },
+      },
+    ]).count("total");
 
     const folders = await TaskUpload.aggregate([
       {
@@ -42,15 +56,20 @@ router.get("/user/:userId/folders", async (req, res) => {
         },
       },
       { $sort: { _id: -1 } }, // Sort by date descending
+      { $skip: (page - 1) * limit }, // Skip for pagination
+      { $limit: parseInt(limit) }, // Limit the number of results
     ]);
 
-    res.status(200).json(
-      folders.map((folder) => ({
+    res.status(200).json({
+      folders: folders.map((folder) => ({
         date: folder._id, // Date from aggregation
         userId: userId, // Include userId from request
         imageurl: folder.imageurl, // Include imageurl from aggregation
-      }))
-    );
+      })),
+      total: totalFolders[0]?.total || 0, // Total folders
+      currentPage: parseInt(page),
+      totalPages: Math.ceil((totalFolders[0]?.total || 0) / limit),
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error fetching folders",
@@ -59,9 +78,10 @@ router.get("/user/:userId/folders", async (req, res) => {
   }
 });
 
-// Get images in a folder by date and user
+// Get images in a folder by date and user with pagination
 router.get("/user/:userId/folder/:date", async (req, res) => {
   const { userId, date } = req.params;
+  const { page = 1, limit = 20 } = req.query; // Default to page 1 and limit 20
 
   try {
     // Validate the date
@@ -74,16 +94,33 @@ router.get("/user/:userId/folder/:date", async (req, res) => {
     const startOfDay = new Date(folderDate.setHours(0, 0, 0, 0));
     const endOfDay = new Date(folderDate.setHours(23, 59, 59, 999));
 
-    // Fetch images
-    const images = await TaskUpload.find({
-      userId: userId, // Use 'new' with ObjectId
+    // Fetch total count
+    const total = await TaskUpload.countDocuments({
+      userId: userId,
       createdAt: {
         $gte: startOfDay,
         $lt: endOfDay,
       },
     });
 
-    res.status(200).json(images);
+    // Fetch images with pagination
+    const images = await TaskUpload.find({
+      userId: userId,
+      createdAt: {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      },
+    })
+      .sort({ createdAt: -1 }) // Order by newest first
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+
+    res.status(200).json({
+      total,
+      images,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(total / limit),
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error fetching images for folder",
@@ -95,7 +132,17 @@ router.get("/user/:userId/folder/:date", async (req, res) => {
 // Get all users with their userId and username
 // Get all users with their userId, username, and shift
 router.get("/users", async (req, res) => {
+  const { page = 1, limit = 20 } = req.query; // Default to page 1, limit 20
+
   try {
+    const total = await TaskUpload.aggregate([
+      {
+        $group: {
+          _id: "$userId", // Group by userId
+        },
+      },
+    ]).count("totalUsers"); // Count the total number of unique users
+
     const users = await TaskUpload.aggregate([
       {
         $group: {
@@ -113,13 +160,22 @@ router.get("/users", async (req, res) => {
         },
       },
       { $sort: { username: 1 } }, // Sort alphabetically by username
+      { $skip: (page - 1) * limit }, // Skip documents for pagination
+      { $limit: parseInt(limit) }, // Limit the number of documents
     ]);
 
     if (!users.length) {
-      return res.status(200).json({ message: "No users found", data: [] });
+      return res
+        .status(200)
+        .json({ message: "No users found", data: [], total: 0 });
     }
 
-    res.status(200).json(users);
+    res.status(200).json({
+      data: users,
+      total: total[0]?.totalUsers || 0, // Total unique users
+      currentPage: parseInt(page),
+      totalPages: Math.ceil((total[0]?.totalUsers || 0) / limit),
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error fetching users",

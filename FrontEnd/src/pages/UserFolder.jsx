@@ -10,6 +10,7 @@ import {
   Modal,
   Spin,
   Input,
+  Pagination,
   message,
 } from "antd";
 import { DeleteOutlined, FolderOpenOutlined } from "@ant-design/icons";
@@ -29,16 +30,21 @@ const UserFolder = () => {
   const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalFolders, setTotalFolders] = useState(0);
+  const [foldersPerPage, setFoldersPerPage] = useState(20);
 
   const correctPassword = "muix@123";
 
-  // Fetch folders from the API
-  const fetchFolders = async () => {
+  const fetchFolders = async (page = 1, limit = 20) => {
+    setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/taskupload/user/${userId}/folders`
+        `/taskupload/user/${userId}/folders?page=${page}&limit=${limit}`
       );
-      setFolders(response.data);
+      const { folders, total } = response.data;
+      setFolders(folders);
+      setTotalFolders(total);
     } catch (error) {
       message.error("Failed to fetch folders.");
     } finally {
@@ -47,8 +53,8 @@ const UserFolder = () => {
   };
 
   useEffect(() => {
-    fetchFolders();
-  }, [userId]);
+    fetchFolders(currentPage, foldersPerPage);
+  }, [userId, currentPage, foldersPerPage]);
 
   const handleFolderClick = (folderData) => {
     navigate(
@@ -72,7 +78,7 @@ const UserFolder = () => {
         { data: { dates: selectedFolders } }
       );
       message.success(response.data.message);
-      fetchFolders(); // Refresh folders after deletion
+      fetchFolders(currentPage, foldersPerPage); // Refresh folders after deletion
     } catch (error) {
       message.error("Failed to delete folders.");
     } finally {
@@ -159,6 +165,17 @@ const UserFolder = () => {
       >
         Delete Selected
       </Button>
+
+      <Pagination
+        current={currentPage}
+        total={totalFolders}
+        pageSize={foldersPerPage}
+        onChange={(page) => setCurrentPage(page)}
+        showSizeChanger
+        pageSizeOptions={["20", "30", "50", "100"]}
+        onShowSizeChange={(current, size) => setFoldersPerPage(size)}
+        style={{ marginTop: "20px", textAlign: "center" }}
+      />
 
       {/* Password Modal */}
       <Modal

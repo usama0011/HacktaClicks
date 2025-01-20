@@ -12,6 +12,7 @@ import {
   message,
   Input,
   Select,
+  Pagination,
 } from "antd";
 import {
   DeleteOutlined,
@@ -35,17 +36,27 @@ const GetAllFolders = () => {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [searchUsername, setSearchUsername] = useState("");
   const [filterShift, setFilterShift] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(20);
+  const [totalEntries, setTotalEntries] = useState(0);
 
-  // Fetch folders from the API
+  // Fetch folders from the API with pagination
   useEffect(() => {
     const fetchFolders = async () => {
       try {
-        const response = await axiosInstance.get("/taskupload/users");
-        if (!response.data.length) {
+        setLoading(true);
+        const response = await axiosInstance.get(
+          `/taskupload/users?page=${currentPage}&limit=${entriesPerPage}`
+        );
+        const { data, total } = response.data;
+
+        if (!data.length) {
           message.info("No users or folders found.");
         }
-        setFolders(response.data);
-        setFilteredFolders(response.data);
+
+        setFolders(data);
+        setFilteredFolders(data);
+        setTotalEntries(total);
       } catch (error) {
         message.error("Failed to fetch folders.");
       } finally {
@@ -54,7 +65,7 @@ const GetAllFolders = () => {
     };
 
     fetchFolders();
-  }, []);
+  }, [currentPage, entriesPerPage]);
 
   const handleFolderClick = (userId) => {
     navigate(`/admindashboard/viewfolders/${userId}`);
@@ -119,7 +130,7 @@ const GetAllFolders = () => {
           className="folder-count"
           style={{ color: "#00bba6", textDecoration: "underline" }}
         >
-          (Total: {folders?.length})
+          (Total: {totalEntries})
         </span>
       </Title>
 
@@ -175,7 +186,11 @@ const GetAllFolders = () => {
                   className="getallfolders-checkbox"
                 />
                 <FolderOpenOutlined className="getallfolders-folder-icon" />
-                <p className="getallfolders-folder-name">{folder.username}</p>
+                <p className="getallfolders-folder-name">
+                  {folder.username.length > 30
+                    ? `${folder.username.slice(0, 25)}...`
+                    : folder.username}
+                </p>
                 <p className="getallfolders-folder-shift">
                   Shift: {folder.shift}
                 </p>
@@ -184,6 +199,22 @@ const GetAllFolders = () => {
           ))}
         </Row>
       )}
+
+      <Pagination
+        current={currentPage}
+        total={totalEntries}
+        pageSize={entriesPerPage}
+        onChange={(page) => setCurrentPage(page)}
+        showSizeChanger
+        pageSizeOptions={["20", "30", "50", "100"]}
+        onShowSizeChange={(current, size) => setEntriesPerPage(size)}
+        style={{
+          marginTop: "20px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      />
 
       <Modal
         title="Confirm Deletion"

@@ -5,11 +5,22 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 const router = express.Router();
 
-// Get all users
+// Get all users with pagination
 router.get("/", async (req, res) => {
+  const { page = 1, limit = 20 } = req.query; // Default page and limit
   try {
-    const users = await User.find();
-    res.status(200).json(users);
+    const totalUsers = await User.countDocuments(); // Total number of users
+    const users = await User.find()
+      .skip((page - 1) * limit) // Skip users for pagination
+      .limit(parseInt(limit)) // Limit users per page
+      .sort({ createdAt: -1 }); // Sort by creation date, newest first
+
+    res.status(200).json({
+      data: users,
+      total: totalUsers,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(totalUsers / limit),
+    });
   } catch (error) {
     res.status(500).json({ message: "Error fetching users", error });
   }

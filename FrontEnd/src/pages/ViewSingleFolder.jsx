@@ -1,69 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Row, Col, Card, Image, Spin, Typography, message } from "antd";
-import { CalendarOutlined } from "@ant-design/icons";
+import {
+  Row,
+  Col,
+  Card,
+  Image,
+  Spin,
+  Typography,
+  message,
+  Button,
+  Modal,
+  Pagination,
+  Select,
+} from "antd";
+import {
+  CalendarOutlined,
+  PictureOutlined,
+  FolderOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
 import axiosInstance from "../components/BaseURL";
-import { PictureOutlined, FolderOutlined } from "@ant-design/icons";
-
 import "../styles/ViewImages.css";
 
 const { Title } = Typography;
+const { Option } = Select;
 
 const ViewImages = () => {
   const { folderName } = useParams();
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [entriesPerPage, setEntriesPerPage] = useState(20);
 
-  // Helper to validate and format the date
-  const formatDate = (dateString) => {
+  const fetchImages = async (page = 1, limit = 20) => {
     try {
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) {
-        throw new Error("Invalid date format");
-      }
-      return date.toISOString().split("T")[0]; // Convert to 'YYYY-MM-DD' format
-    } catch (error) {
-      message.error("Invalid date format in the URL.");
-      return null; // Return null if invalid
-    }
-  };
-
-  const formatDateTime = (dateString) => {
-    try {
-      const options = {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        hour12: true,
-      };
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) {
-        throw new Error("Invalid date format");
-      }
-      return date.toLocaleString("en-US", options); // Format date
-    } catch (error) {
-      return "Invalid date"; // Fallback for invalid date
-    }
-  };
-
-  const fetchImages = async () => {
-    try {
-      const userId = JSON.parse(localStorage.getItem("user")).id; // Get user ID from localStorage
-
-      // Validate and format the date
-      const formattedDate = formatDate(folderName);
-      if (!formattedDate) {
-        throw new Error("Invalid date format in the URL.");
-      }
-
+      setLoading(true);
+      const userId = JSON.parse(localStorage.getItem("user")).id;
       const response = await axiosInstance.get(
-        `/taskupload/user/${userId}/folder/${formattedDate}`
+        `/taskupload/user/${userId}/folder/${folderName}?page=${page}&limit=${limit}`
       );
-      setImages(response.data);
+      const { images, total, totalPages } = response.data;
+      setImages(images);
+      setTotalEntries(total);
+      setTotalPages(totalPages);
+      setCurrentPage(page);
     } catch (error) {
       message.error(error.message || "Failed to fetch images for the folder.");
     } finally {
@@ -72,8 +57,36 @@ const ViewImages = () => {
   };
 
   useEffect(() => {
-    fetchImages();
-  }, [folderName]);
+    fetchImages(currentPage, entriesPerPage);
+  }, [folderName, currentPage, entriesPerPage]);
+
+  const showImagePreview = (index) => {
+    setCurrentImageIndex(index);
+    setIsModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleEntriesPerPageChange = (value) => {
+    setEntriesPerPage(value);
+    setCurrentPage(1); // Reset to first page
+  };
+
+  const showNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const showPreviousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
 
   if (loading) {
     return (
@@ -93,7 +106,6 @@ const ViewImages = () => {
           marginBottom: "20px",
         }}
       >
-        {/* Left Side: Image Count with Icon */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <PictureOutlined
             style={{ color: "#658951", fontSize: "24px", marginRight: "8px" }}
@@ -107,12 +119,11 @@ const ViewImages = () => {
               marginRight: "8px",
             }}
           >
-            {images?.length}
+            {totalEntries}
           </span>
           <span style={{ color: "#555", fontSize: "24px" }}>Images</span>
         </div>
 
-        {/* Right Side: Folder Name with Icon */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <FolderOutlined
             style={{ color: "#658951", fontSize: "24px", marginRight: "8px" }}
@@ -131,43 +142,94 @@ const ViewImages = () => {
           <span style={{ color: "#555", fontSize: "24px" }}>Folder</span>
         </div>
       </div>
+
       <Row gutter={[16, 16]} justify="start">
-        {images.map((image) => (
+        {images.map((image, index) => (
           <Col xs={24} sm={12} md={8} lg={6} key={image._id}>
-            <Card className="viewimages-card" hoverable>
+            <Card
+              className="viewimages-card"
+              hoverable
+              onClick={() => showImagePreview(index)}
+            >
               <Image
                 src={image.imageurl}
-                alt={formatDateTime(image.createdAt)}
+                alt={image.createdAt}
                 className="viewimages-image"
+                preview={false}
               />
               <div
                 style={{
                   marginTop: "8px",
                   display: "flex",
                   alignItems: "center",
-
                   justifyContent: "space-between",
                   fontSize: "14px",
-                  color: "#555", // Subtle text color
-                  fontWeight: "500", // Slightly bold for emphasis
+                  color: "#555",
+                  fontWeight: "500",
                 }}
-                className="viewimages-date"
               >
                 <CalendarOutlined
                   style={{
                     marginRight: "8px",
-                    color: "#1890ff", // Use a primary color for the icon
-                    fontSize: "16px", // Slightly larger icon for better visibility
+                    color: "#1890ff",
+                    fontSize: "16px",
                   }}
                 />
                 <div style={{ fontStyle: "italic" }}>
-                  {formatDateTime(image.createdAt)}
+                  {new Date(image.createdAt).toLocaleString()}
                 </div>
               </div>
             </Card>
           </Col>
         ))}
       </Row>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "20px",
+        }}
+      >
+        <Select defaultValue={20} onChange={handleEntriesPerPageChange}>
+          <Option value={20}>20</Option>
+          <Option value={30}>30</Option>
+          <Option value={50}>50</Option>
+          <Option value={100}>100</Option>
+        </Select>
+        <Pagination
+          current={currentPage}
+          total={totalEntries}
+          pageSize={entriesPerPage}
+          onChange={handlePageChange}
+        />
+      </div>
+
+      <Modal
+        visible={isModalVisible}
+        footer={null}
+        onCancel={closeModal}
+        centered
+        width={800}
+        bodyStyle={{ textAlign: "center" }}
+      >
+        <Button
+          icon={<LeftOutlined />}
+          onClick={showPreviousImage}
+          style={{ position: "absolute", left: 10, top: "50%", zIndex: 1000 }}
+        />
+        <Image
+          src={images[currentImageIndex]?.imageurl}
+          alt="Preview"
+          style={{ maxHeight: "70vh", objectFit: "contain" }}
+        />
+        <Button
+          icon={<RightOutlined />}
+          onClick={showNextImage}
+          style={{ position: "absolute", right: 10, top: "50%", zIndex: 1000 }}
+        />
+      </Modal>
     </div>
   );
 };

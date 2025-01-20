@@ -16,7 +16,6 @@ const corsOptions = {
     "https://hackta-clicks.vercel.app",
     "http://localhost:5173",
     "http://localhost:5174",
-    "https://res.cloudinary.com", // Allow Cloudinary domain
   ], // Replace with your frontend URL
   credentials: true, // Allow cookies and other credentials to be sent
   methods: ["GET", "POST", "PUT", "DELETE"], // Allow necessary methods

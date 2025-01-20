@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Row, Col, Card, Typography, message, Spin, Tooltip } from "antd";
 import {
-  FolderFilled,
-  FileAddOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import axiosInstance from "../components/BaseURL"; // Import Axios Instance
+  Row,
+  Col,
+  Card,
+  Typography,
+  message,
+  Spin,
+  Tooltip,
+  Pagination,
+} from "antd";
+import { FolderFilled } from "@ant-design/icons";
+import axiosInstance from "../components/BaseURL";
 import "../styles/ViewTasks.css";
 
 const { Title, Text } = Typography;
@@ -15,15 +20,20 @@ const ViewFolders = () => {
   const navigate = useNavigate();
   const [folders, setFolders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalFolders, setTotalFolders] = useState(0);
+  const [foldersPerPage, setFoldersPerPage] = useState(20);
 
-  const fetchFolders = async () => {
+  const fetchFolders = async (page = 1, limit = 20) => {
+    setLoading(true);
     try {
-      const userId = JSON.parse(localStorage.getItem("user")).id; // Get user ID from localStorage
-      console.log(userId);
+      const userId = JSON.parse(localStorage.getItem("user")).id;
       const response = await axiosInstance.get(
-        `/taskupload/user/${userId}/folders`
+        `/taskupload/user/${userId}/folders?page=${page}&limit=${limit}`
       );
-      setFolders(response.data);
+      const { folders, total } = response.data;
+      setFolders(folders);
+      setTotalFolders(total);
     } catch (error) {
       message.error("Failed to fetch folders.");
     } finally {
@@ -32,11 +42,11 @@ const ViewFolders = () => {
   };
 
   useEffect(() => {
-    fetchFolders();
-  }, []);
+    fetchFolders(currentPage, foldersPerPage);
+  }, [currentPage, foldersPerPage]);
 
-  const handleDoubleClick = (folderDate) => {
-    navigate(`/tasks/${folderDate}`); // Navigate to folder
+  const handleFolderClick = (folderDate) => {
+    navigate(`/tasks/${folderDate}`);
   };
 
   if (loading) {
@@ -63,14 +73,16 @@ const ViewFolders = () => {
               <Card
                 className="viewtasks-folder"
                 hoverable
-                onClick={() => handleDoubleClick(folder.date)}
+                onClick={() => handleFolderClick(folder.date)}
               >
                 <div className="viewtasks-folder-icon">
                   <FolderFilled
                     style={{ fontSize: "64px", color: "#658951" }}
                   />
                 </div>
-                <Text className="viewtasks-folder-name">{folder.date}</Text>
+                <Tooltip title={folder.date} placement="top">
+                  <Text className="viewtasks-folder-name">{folder.date}</Text>
+                </Tooltip>
               </Card>
             </Col>
           ))
@@ -80,6 +92,25 @@ const ViewFolders = () => {
           </Text>
         )}
       </Row>
+
+      <Pagination
+        current={currentPage}
+        total={totalFolders}
+        pageSize={foldersPerPage}
+        onChange={(page) => setCurrentPage(page)}
+        showSizeChanger
+        pageSizeOptions={["20", "30", "50", "100"]}
+        onShowSizeChange={(current, size) => setFoldersPerPage(size)}
+        style={{
+          marginTop: "20px",
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "10px",
+          borderRadius: "8px",
+        }}
+      />
     </div>
   );
 };

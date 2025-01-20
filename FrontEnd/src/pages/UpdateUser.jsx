@@ -9,6 +9,7 @@ import {
   message,
   Row,
   Col,
+  Pagination,
 } from "antd";
 import {
   UserOutlined,
@@ -31,20 +32,27 @@ const UpdateUser = () => {
   const [filterRole, setFilterRole] = useState("");
   const [filterShift, setFilterShift] = useState("");
   const [searchUsername, setSearchUsername] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [entriesPerPage, setEntriesPerPage] = useState(20);
 
   const [form] = Form.useForm();
 
-  // Fetch users from the API
-  const fetchUsers = async () => {
+  // Fetch users with pagination
+  const fetchUsers = async (page = 1, limit = 20) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/users");
-      const userData = response.data.reverse().map((user) => ({
+      const response = await axiosInstance.get(
+        `/users?page=${page}&limit=${limit}`
+      );
+      const { data, total } = response.data;
+      const userData = data.map((user) => ({
         ...user,
         key: user._id, // Map MongoDB _id to Ant Design key
       }));
       setUsers(userData);
       setFilteredUsers(userData);
+      setTotalEntries(total);
     } catch (error) {
       message.error("Failed to fetch users.");
     } finally {
@@ -53,8 +61,8 @@ const UpdateUser = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    fetchUsers(currentPage, entriesPerPage);
+  }, [currentPage, entriesPerPage]);
 
   const handleEdit = (user) => {
     Modal.confirm({
@@ -201,7 +209,7 @@ const UpdateUser = () => {
           <Button
             type="link"
             danger
-            disabled={record.role === "superadmin"} // Disable for superadmin
+            disabled={record.role === "superadmin"}
             onClick={() => handleDelete(record.key)}
             icon={<DeleteOutlined />}
           >
@@ -265,8 +273,19 @@ const UpdateUser = () => {
         columns={columns}
         dataSource={filteredUsers}
         loading={loading}
-        pagination={{ pageSize: 50 }}
+        pagination={false}
         className="updateuser-table"
+      />
+
+      <Pagination
+        current={currentPage}
+        total={totalEntries}
+        pageSize={entriesPerPage}
+        onChange={(page) => setCurrentPage(page)}
+        showSizeChanger
+        pageSizeOptions={["20", "30", "50", "100"]}
+        onShowSizeChange={(current, size) => setEntriesPerPage(size)}
+        style={{ marginTop: "20px", textAlign: "center" }}
       />
 
       {/* Update User Modal */}

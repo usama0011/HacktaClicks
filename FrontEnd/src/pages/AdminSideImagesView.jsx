@@ -1,4 +1,3 @@
-// AdminSideImagesView Component with Next/Previous Buttons
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -11,6 +10,8 @@ import {
   Typography,
   Spin,
   message,
+  Pagination,
+  Select,
 } from "antd";
 import {
   CalendarOutlined,
@@ -19,11 +20,11 @@ import {
   PictureOutlined,
   FolderOutlined,
 } from "@ant-design/icons";
-
 import axiosInstance from "../components/BaseURL";
 import "../styles/ViewImages.css";
 
 const { Title } = Typography;
+const { Option } = Select;
 
 const AdminSideImagesView = () => {
   const { userId, folderDate } = useParams();
@@ -31,6 +32,32 @@ const AdminSideImagesView = () => {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [entriesPerPage, setEntriesPerPage] = useState(20);
+
+  const fetchImages = async (page = 1, limit = 20) => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get(
+        `/taskupload/user/${userId}/folder/${folderDate}?page=${page}&limit=${limit}`
+      );
+      const { images, total, totalPages } = response.data;
+      setImages(images);
+      setTotalEntries(total);
+      setTotalPages(totalPages);
+      setCurrentPage(page);
+    } catch (error) {
+      message.error(error.message || "Failed to fetch images for the folder.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchImages(currentPage, entriesPerPage);
+  }, [userId, folderDate, currentPage, entriesPerPage]);
 
   const showImagePreview = (index) => {
     setCurrentImageIndex(index);
@@ -39,6 +66,15 @@ const AdminSideImagesView = () => {
 
   const closeModal = () => {
     setIsModalVisible(false);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleEntriesPerPageChange = (value) => {
+    setEntriesPerPage(value);
+    setCurrentPage(1); // Reset to first page
   };
 
   const showNextImage = () => {
@@ -50,23 +86,6 @@ const AdminSideImagesView = () => {
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
-
-  const fetchImages = async () => {
-    try {
-      const response = await axiosInstance.get(
-        `/taskupload/user/${userId}/folder/${folderDate}`
-      );
-      setImages(response.data);
-    } catch (error) {
-      message.error(error.message || "Failed to fetch images for the folder.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchImages();
-  }, [userId, folderDate]);
 
   if (loading) {
     return (
@@ -113,7 +132,7 @@ const AdminSideImagesView = () => {
               marginRight: "8px",
             }}
           >
-            {images?.length}
+            {totalEntries}
           </span>
           <span style={{ color: "#00bba6", fontSize: "24px" }}>Images</span>
         </div>
@@ -178,6 +197,28 @@ const AdminSideImagesView = () => {
           </Col>
         ))}
       </Row>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "20px",
+        }}
+      >
+        <Select defaultValue={20} onChange={handleEntriesPerPageChange}>
+          <Option value={20}>20</Option>
+          <Option value={30}>30</Option>
+          <Option value={50}>50</Option>
+          <Option value={100}>100</Option>
+        </Select>
+        <Pagination
+          current={currentPage}
+          total={totalEntries}
+          pageSize={entriesPerPage}
+          onChange={handlePageChange}
+        />
+      </div>
 
       {/* Modal for Image Preview */}
       <Modal

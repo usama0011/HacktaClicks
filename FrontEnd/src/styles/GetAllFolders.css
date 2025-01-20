@@ -27,6 +27,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   padding: 15px;
+  min-height: 210px;
 }
 
 .getallfolders-folder-card:hover {

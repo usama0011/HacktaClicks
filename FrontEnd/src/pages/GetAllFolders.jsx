@@ -39,32 +39,36 @@ const GetAllFolders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
   const [totalEntries, setTotalEntries] = useState(0);
+  const fetchFolders = async (page = 1, limit = 20) => {
+    try {
+      setLoading(true);
+      const params = {
+        page,
+        limit,
+        username: searchUsername || undefined,
+        shift: filterShift || undefined,
+      };
+      const response = await axiosInstance.get("/taskupload/users", {
+        params,
+      });
+      const { data, total } = response.data;
 
+      if (!data.length) {
+        message.info("No users or folders found.");
+      }
+
+      setFolders(data);
+      setFilteredFolders(data);
+      setTotalEntries(total);
+    } catch (error) {
+      message.error("Failed to fetch folders.");
+    } finally {
+      setLoading(false);
+    }
+  };
   // Fetch folders from the API with pagination
   useEffect(() => {
-    const fetchFolders = async () => {
-      try {
-        setLoading(true);
-        const response = await axiosInstance.get(
-          `/taskupload/users?page=${currentPage}&limit=${entriesPerPage}`
-        );
-        const { data, total } = response.data;
-
-        if (!data.length) {
-          message.info("No users or folders found.");
-        }
-
-        setFolders(data);
-        setFilteredFolders(data);
-        setTotalEntries(total);
-      } catch (error) {
-        message.error("Failed to fetch folders.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFolders();
+    fetchFolders(currentPage, entriesPerPage);
   }, [currentPage, entriesPerPage]);
 
   const handleFolderClick = (userId) => {
@@ -98,27 +102,14 @@ const GetAllFolders = () => {
     setIsModalVisible(true);
   };
 
-  // Handle search and filter
   const handleSearch = () => {
-    const filtered = folders.filter((folder) => {
-      const matchesUsername = searchUsername
-        ? folder.username.toLowerCase().includes(searchUsername.toLowerCase())
-        : true;
-      const matchesShift = filterShift ? folder.shift === filterShift : true;
-      return matchesUsername && matchesShift;
-    });
-    setFilteredFolders(filtered);
-    setTotalEntries(filtered.length); // Update total entries for filtered data
-    setCurrentPage(1); // Reset to the first page when filtering
+    fetchFolders(1, entriesPerPage); // Fetch filtered folders starting from the first page
   };
 
-  // Automatically reset filters when clearing input or dropdown
   const handleResetFilters = () => {
     setSearchUsername("");
     setFilterShift("");
-    setFilteredFolders(folders);
-    setTotalEntries(folders.length); // Reset total entries to original count
-    setCurrentPage(1); // Reset to the first page
+    fetchFolders(1, entriesPerPage); // Fetch all folders starting from the first page
   };
 
   if (loading) {
@@ -154,7 +145,7 @@ const GetAllFolders = () => {
             onChange={(e) => setSearchUsername(e.target.value)}
             prefix={<SearchOutlined />}
             allowClear
-            onClear={handleResetFilters} // Automatically reset filters on clear
+            onClear={handleResetFilters} // Reset filters on clear
           />
         </Col>
         <Col xs={24} sm={12} md={8}>
@@ -164,7 +155,7 @@ const GetAllFolders = () => {
             value={filterShift}
             onChange={(value) => setFilterShift(value)}
             allowClear
-            onClear={handleResetFilters} // Automatically reset filters on clear
+            onClear={handleResetFilters} // Reset filters on clear
           >
             <Option value="morning">Morning</Option>
             <Option value="evening">Evening</Option>

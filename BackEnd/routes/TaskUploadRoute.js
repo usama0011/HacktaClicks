@@ -132,18 +132,31 @@ router.get("/user/:userId/folder/:date", async (req, res) => {
 // Get all users with their userId and username
 // Get all users with their userId, username, and shift
 router.get("/users", async (req, res) => {
-  const { page = 1, limit = 20 } = req.query; // Default to page 1, limit 20
+  const { page = 1, limit = 20, username, shift } = req.query; // Default to page 1, limit 20
+  const filters = {};
+
+  // Apply filters based on query parameters
+  if (username) {
+    filters.username = { $regex: username, $options: "i" }; // Case-insensitive search
+  }
+  if (shift) {
+    filters.shift = shift; // Match exact shift
+  }
 
   try {
+    // Total count of unique users matching the filters
     const total = await TaskUpload.aggregate([
+      { $match: filters }, // Apply filters here
       {
         $group: {
-          _id: "$userId", // Group by userId
+          _id: "$userId",
         },
       },
-    ]).count("totalUsers"); // Count the total number of unique users
+    ]).count("totalUsers");
 
+    // Fetch paginated data with filters
     const users = await TaskUpload.aggregate([
+      { $match: filters }, // Apply filters here
       {
         $group: {
           _id: "$userId", // Group by userId

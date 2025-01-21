@@ -38,13 +38,17 @@ const UpdateUser = () => {
 
   const [form] = Form.useForm();
 
-  // Fetch users with pagination
   const fetchUsers = async (page = 1, limit = 20) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get(
-        `/users?page=${page}&limit=${limit}`
-      );
+      const params = {
+        page,
+        limit,
+        username: searchUsername || undefined,
+        shift: filterShift || undefined,
+        role: filterRole || undefined,
+      };
+      const response = await axiosInstance.get("/users", { params });
       const { data, total } = response.data;
       const userData = data.map((user) => ({
         ...user,
@@ -145,26 +149,14 @@ const UpdateUser = () => {
   };
 
   const handleFilter = () => {
-    const filtered = users.filter(
-      (user) =>
-        (filterRole ? user.role === filterRole : true) &&
-        (filterShift ? user.shift === filterShift : true) &&
-        (searchUsername
-          ? user.username.toLowerCase().includes(searchUsername.toLowerCase())
-          : true)
-    );
-    setFilteredUsers(filtered);
-    setTotalEntries(filtered.length); // Update the total count based on filtered users
-    setCurrentPage(1); // Reset to the first page when filtering
+    fetchUsers(1, entriesPerPage); // Fetch filtered users starting from the first page
   };
 
   const handleResetFilters = () => {
     setFilterRole("");
     setFilterShift("");
     setSearchUsername("");
-    setFilteredUsers(users);
-    setTotalEntries(users.length); // Reset total count to original user count
-    setCurrentPage(1); // Reset pagination to the first page
+    fetchUsers(1, entriesPerPage); // Fetch all users starting from the first page
   };
 
   const columns = [
@@ -233,7 +225,27 @@ const UpdateUser = () => {
 
   return (
     <div className="updateuser-container">
-      <h2 className="updateuser-title">Manage Users</h2>
+      <h2
+        style={{ textAlign: "center", textDecoration: "underline" }}
+        className="updateuser-title"
+      >
+        Manage Users
+      </h2>
+      <div
+        style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}
+      >
+        <UserOutlined
+          style={{ color: "#00bba6", fontSize: "24px", marginRight: "8px" }}
+        />
+        <span
+          style={{ fontWeight: "bold", fontSize: "24px", color: "#00bba6" }}
+        >
+          {totalEntries}
+        </span>
+        <span style={{ marginLeft: "8px", fontSize: "18px", color: "#555" }}>
+          Users Found
+        </span>
+      </div>
 
       <Row gutter={[16, 16]} className="updateuser-filters">
         <Col xs={24} sm={8} md={6}>

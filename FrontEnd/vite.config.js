@@ -8,8 +8,4 @@ export default defineConfig({
       "@": "/src",
     },
   },
-  build: {
-    outDir: "dist", // Ensure your build output is in the correct directory
-  },
-  base: "./", // Ensures proper asset loading paths
 });

@@ -1,6 +1,6 @@
 /* App Layout */
 .app-layout {
-  background-color: #cfdec7; /* Set website background color */
+  background-color: #f8f8f8; /* Set website background color */
   min-height: 100vh;
 }
 
@@ -9,7 +9,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: #648950; /* Navbar background */
+  background-color: #00bba6; /* Navbar background */
   padding: 0 20px;
   border-bottom: 1px solid #ddd;
   color: white !important;
@@ -77,7 +77,7 @@
 }
 
 .app-card:hover {
-  border-color: #c1d3b5; /* Change border on hover */
+  border-color: #00bba6; /* Change border on hover */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 

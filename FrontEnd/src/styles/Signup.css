@@ -1,7 +1,8 @@
 /* General Page Styles */
 .signup-page {
-  background: url("https://images.unsplash.com/photo-1674027326252-a09b3473e18f?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
-    no-repeat center center/cover; /* Replace with actual background image URL */
+  background: linear-gradient(rgba(4, 155, 137, 0.4), rgba(4, 155, 137, 0.4)),
+    url("https://images.unsplash.com/photo-1674027326252-a09b3473e18f?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+      no-repeat center center/cover;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -10,6 +11,7 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
+  height: 100vh;
 }
 
 /* Signup Container */
@@ -80,17 +82,16 @@
 }
 
 .signup-form .ant-btn-primary {
-  background-color: #cfdec7;
+  background-color: #00bba6;
   border-color: #cfdec7;
-  color: black;
+  color: white;
   height: 40px !important;
   font-weight: 500;
 }
 
 .signup-form .ant-btn-primary:hover {
-  background-color: #cfdec7 !important;
-  border-color: black !important;
-  color: black !important;
+  background-color: #06e0c7 !important;
+  color: white !important;
 }
 
 /* Modal Styles */
@@ -109,7 +110,7 @@
 }
 
 .signup-login-redirect .signup-login-link {
-  color: #3c6327;
+  color: #00bba6;
   font-weight: bold;
   text-decoration: none;
 }

@@ -59,7 +59,7 @@ const ViewFolders = () => {
 
   return (
     <div className="viewtasks-container">
-      <Title level={2} className="viewtasks-title">
+      <Title style={{ color: "#00bba6" }} level={2} className="viewtasks-title">
         Manage Your Tasks
       </Title>
       <p className="viewtasks-subtitle">
@@ -77,7 +77,7 @@ const ViewFolders = () => {
               >
                 <div className="viewtasks-folder-icon">
                   <FolderFilled
-                    style={{ fontSize: "64px", color: "#658951" }}
+                    style={{ fontSize: "64px", color: "#00bba6" }}
                   />
                 </div>
                 <Tooltip title={folder.date} placement="top">

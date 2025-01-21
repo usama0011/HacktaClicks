@@ -4,8 +4,9 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url("https://images.unsplash.com/photo-1674027326252-a09b3473e18f?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
-    no-repeat center center/cover;
+  background: linear-gradient(rgba(4, 155, 137, 0.4), rgba(4, 155, 137, 0.4)),
+    url("https://images.unsplash.com/photo-1674027326252-a09b3473e18f?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
+      no-repeat center center/cover;
 }
 
 /* Login Container */
@@ -86,7 +87,7 @@
 
 .login-forgot {
   font-size: 14px;
-  color: #3c6327;
+  color: #00bba6;
   text-decoration: none;
 }
 
@@ -95,16 +96,19 @@
 }
 
 .login-button {
-  background-color: #cfdec7;
+  background-color: #00bba6;
   border-color: #cfdec7;
-  color: black;
+  color: white;
   font-weight: bold;
   border-radius: 6px;
 }
 
 .login-button:hover {
-  background-color: #333;
-  border-color: #333;
+  background-color: #0ad4bd !important;
+  border-color: white !important;
+}
+.login-button:active {
+  border-color: #00bba6 !important;
 }
 
 .google-login-button {
@@ -127,7 +131,7 @@
 }
 
 .login-signup-link a {
-  color: #3c6327;
+  color: #00bba6;
   text-decoration: none;
 }
 

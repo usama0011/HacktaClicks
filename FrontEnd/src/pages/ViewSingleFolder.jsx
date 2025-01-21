@@ -108,11 +108,11 @@ const ViewImages = () => {
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <PictureOutlined
-            style={{ color: "#658951", fontSize: "24px", marginRight: "8px" }}
+            style={{ color: "#00bba6", fontSize: "24px", marginRight: "8px" }}
           />
           <span
             style={{
-              color: "#658951",
+              color: "#00bba6",
               fontWeight: "bold",
               fontSize: "27px",
               textDecoration: "underline",
@@ -126,11 +126,11 @@ const ViewImages = () => {
 
         <div style={{ display: "flex", alignItems: "center" }}>
           <FolderOutlined
-            style={{ color: "#658951", fontSize: "24px", marginRight: "8px" }}
+            style={{ color: "#00bba6", fontSize: "24px", marginRight: "8px" }}
           />
           <span
             style={{
-              color: "#658951",
+              color: "#00bba6",
               fontWeight: "bold",
               fontSize: "27px",
               textDecoration: "underline",

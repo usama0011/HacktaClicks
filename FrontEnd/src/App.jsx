@@ -99,7 +99,11 @@ const App = () => {
       <Content className="app-content">
         {/* Welcome Banner */}
         <div className="app-banner">
-          <Title level={2} className="app-banner-title">
+          <Title
+            style={{ color: "#00bba6" }}
+            level={2}
+            className="app-banner-title"
+          >
             Welcome Back, User!
           </Title>
           <p className="app-banner-subtitle">
@@ -113,6 +117,11 @@ const App = () => {
             <Col xs={24} sm={12} lg={8}>
               <Card
                 className="app-card"
+                headStyle={{
+                  backgroundColor: "#00bba6", // Set your desired background color
+                  color: "white", // Adjust the text color for contrast
+                  fontWeight: "bold", // Optional: Add bold text
+                }}
                 title={
                   <>
                     <CheckSquareOutlined /> Your Tasks
@@ -125,7 +134,9 @@ const App = () => {
                   alt="Tasks"
                   className="card-image"
                 />
-                <p>Manage your tasks efficiently.</p>
+                <p style={{ color: "#00bba6" }}>
+                  Manage your tasks efficiently.
+                </p>
                 <p>Check deadlines and pending work.</p>
               </Card>
             </Col>
@@ -139,13 +150,20 @@ const App = () => {
                     </>
                   }
                   hoverable
+                  headStyle={{
+                    backgroundColor: "#00bba6", // Set your desired background color
+                    color: "white", // Adjust the text color for contrast
+                    fontWeight: "bold", // Optional: Add bold text
+                  }}
                 >
                   <img
                     src="https://img.freepik.com/free-vector/events-concept-illustration_114360-27159.jpg?ga=GA1.1.1731289663.1735821887&semt=ais_hybrid"
                     alt="Folders"
                     className="card-image"
                   />
-                  <p>View and organize your folders.</p>
+                  <p style={{ color: "#00bba6" }}>
+                    View and organize your folders.
+                  </p>
                   <p>Double-click to explore contents.</p>
                 </Card>
               </Link>
@@ -153,6 +171,11 @@ const App = () => {
             <Col xs={24} sm={12} lg={8}>
               <Link to="/uploadImages">
                 <Card
+                  headStyle={{
+                    backgroundColor: "#00bba6", // Set your desired background color
+                    color: "white", // Adjust the text color for contrast
+                    fontWeight: "bold", // Optional: Add bold text
+                  }}
                   className="app-card"
                   title={
                     <>
@@ -166,7 +189,9 @@ const App = () => {
                     alt="Upload"
                     className="card-image"
                   />
-                  <p>Upload and manage your images.</p>
+                  <p style={{ color: "#00bba6" }}>
+                    Upload and manage your images.
+                  </p>
                   <p>Drag and drop functionality available.</p>
                 </Card>
               </Link>
@@ -176,7 +201,11 @@ const App = () => {
 
         {/* Calendar Section */}
         <div className="app-calendar">
-          <Title level={3} className="app-calendar-title">
+          <Title
+            style={{ color: "#00bba6" }}
+            level={3}
+            className="app-calendar-title"
+          >
             Your Calendar
           </Title>
           <Calendar fullscreen={false} onPanelChange={onPanelChange} />

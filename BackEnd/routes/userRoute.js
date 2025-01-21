@@ -5,12 +5,25 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 const router = express.Router();
 
-// Get all users with pagination
+// Get all users with pagination and filtering
 router.get("/", async (req, res) => {
-  const { page = 1, limit = 20 } = req.query; // Default page and limit
+  const { page = 1, limit = 20, username, shift, role } = req.query; // Default page and limit
+  const filter = {};
+
+  // Add filters based on query parameters
+  if (username) {
+    filter.username = { $regex: username, $options: "i" }; // Case-insensitive regex search
+  }
+  if (shift) {
+    filter.shift = shift; // Match shift exactly
+  }
+  if (role) {
+    filter.role = role; // Match role exactly
+  }
+
   try {
-    const totalUsers = await User.countDocuments(); // Total number of users
-    const users = await User.find()
+    const totalUsers = await User.countDocuments(filter); // Count users based on filters
+    const users = await User.find(filter)
       .skip((page - 1) * limit) // Skip users for pagination
       .limit(parseInt(limit)) // Limit users per page
       .sort({ createdAt: -1 }); // Sort by creation date, newest first

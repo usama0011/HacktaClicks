@@ -47,7 +47,12 @@ const Login = () => {
           <div className="login-form-container">
             <h2 className="login-title">Hacka Connect</h2>
             <p className="login-subtitle">Please enter your details</p>
-            <Form layout="vertical" onFinish={onFinish} className="login-form">
+            <Form
+              requiredMark={false} // Disables the red star globally
+              layout="vertical"
+              onFinish={onFinish}
+              className="login-form"
+            >
               <Form.Item
                 label="Username"
                 name="username"

@@ -49,7 +49,7 @@ const Signup = () => {
             Welcome to{" "}
             <span
               style={{
-                color: "#3c6327",
+                color: "#0ad4bd",
               }}
             >
               Hackta Connect
@@ -68,6 +68,7 @@ const Signup = () => {
         <div className="signup-right">
           <h2 className="signup-form-title">Create an Account</h2>
           <Form
+            requiredMark={false} // Disables the red star globally
             layout="vertical"
             onFinish={handleFormSubmit}
             className="signup-form"

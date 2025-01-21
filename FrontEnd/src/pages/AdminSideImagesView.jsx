@@ -189,8 +189,22 @@ const AdminSideImagesView = () => {
                     fontSize: "16px",
                   }}
                 />
-                <div style={{ fontStyle: "italic", color: "#333" }}>
-                  {new Date(image.createdAt).toLocaleString()}
+                <div
+                  style={{
+                    fontStyle: "italic",
+                    color: "#333",
+                    textDecoration: "underline",
+                  }}
+                >
+                  {new Date(image.createdAt).toLocaleString("en-US", {
+                    weekday: "short", // Tue
+                    year: "numeric", // 2025
+                    month: "short", // Jan
+                    day: "2-digit", // 21
+                    hour: "2-digit", // 11
+                    minute: "2-digit", // 07
+                    hour12: true, // AM/PM format
+                  })}
                 </div>
               </div>
             </Card>

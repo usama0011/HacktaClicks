@@ -108,6 +108,17 @@ const GetAllFolders = () => {
       return matchesUsername && matchesShift;
     });
     setFilteredFolders(filtered);
+    setTotalEntries(filtered.length); // Update total entries for filtered data
+    setCurrentPage(1); // Reset to the first page when filtering
+  };
+
+  // Automatically reset filters when clearing input or dropdown
+  const handleResetFilters = () => {
+    setSearchUsername("");
+    setFilterShift("");
+    setFilteredFolders(folders);
+    setTotalEntries(folders.length); // Reset total entries to original count
+    setCurrentPage(1); // Reset to the first page
   };
 
   if (loading) {
@@ -142,6 +153,8 @@ const GetAllFolders = () => {
             value={searchUsername}
             onChange={(e) => setSearchUsername(e.target.value)}
             prefix={<SearchOutlined />}
+            allowClear
+            onClear={handleResetFilters} // Automatically reset filters on clear
           />
         </Col>
         <Col xs={24} sm={12} md={8}>
@@ -151,6 +164,7 @@ const GetAllFolders = () => {
             value={filterShift}
             onChange={(value) => setFilterShift(value)}
             allowClear
+            onClear={handleResetFilters} // Automatically reset filters on clear
           >
             <Option value="morning">Morning</Option>
             <Option value="evening">Evening</Option>

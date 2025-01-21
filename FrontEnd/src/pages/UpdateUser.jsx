@@ -154,6 +154,17 @@ const UpdateUser = () => {
           : true)
     );
     setFilteredUsers(filtered);
+    setTotalEntries(filtered.length); // Update the total count based on filtered users
+    setCurrentPage(1); // Reset to the first page when filtering
+  };
+
+  const handleResetFilters = () => {
+    setFilterRole("");
+    setFilterShift("");
+    setSearchUsername("");
+    setFilteredUsers(users);
+    setTotalEntries(users.length); // Reset total count to original user count
+    setCurrentPage(1); // Reset pagination to the first page
   };
 
   const columns = [
@@ -231,6 +242,8 @@ const UpdateUser = () => {
             value={searchUsername}
             onChange={(e) => setSearchUsername(e.target.value)}
             prefix={<SearchOutlined />}
+            allowClear
+            onClear={handleResetFilters} // Reset filters on clear
           />
         </Col>
         <Col xs={24} sm={8} md={6}>
@@ -239,6 +252,7 @@ const UpdateUser = () => {
             value={filterRole}
             onChange={(value) => setFilterRole(value)}
             allowClear
+            onClear={handleResetFilters} // Reset filters on clear
           >
             <Option value="user">User</Option>
             <Option value="admin">Admin</Option>
@@ -251,6 +265,7 @@ const UpdateUser = () => {
             value={filterShift}
             onChange={(value) => setFilterShift(value)}
             allowClear
+            onClear={handleResetFilters} // Reset filters on clear
           >
             <Option value="morning">Morning</Option>
             <Option value="evening">Evening</Option>

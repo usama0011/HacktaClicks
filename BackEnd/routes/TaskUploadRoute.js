@@ -218,7 +218,6 @@ router.post("/", async (req, res) => {
       imageurl,
       shift,
       userId,
-      imageStatus,
     });
 
     await newTask.save();

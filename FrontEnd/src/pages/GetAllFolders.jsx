@@ -27,6 +27,18 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const GetAllFolders = () => {
+  const saveFiltersToLocalStorage = (filters) => {
+    localStorage.setItem("folderFilters", JSON.stringify(filters));
+  };
+
+  const getFiltersFromLocalStorage = () => {
+    const filters = localStorage.getItem("folderFilters");
+    return filters ? JSON.parse(filters) : { username: "", shift: "" };
+  };
+  const initialFilters = getFiltersFromLocalStorage();
+  const [searchUsername, setSearchUsername] = useState(initialFilters.username);
+  const [filterShift, setFilterShift] = useState(initialFilters.shift);
+
   const navigate = useNavigate();
   const [folders, setFolders] = useState([]);
   const [filteredFolders, setFilteredFolders] = useState([]);
@@ -34,11 +46,11 @@ const GetAllFolders = () => {
   const [selectedFolders, setSelectedFolders] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
-  const [searchUsername, setSearchUsername] = useState("");
-  const [filterShift, setFilterShift] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
   const [totalEntries, setTotalEntries] = useState(0);
+
   const fetchFolders = async (page = 1, limit = 20) => {
     try {
       setLoading(true);
@@ -66,11 +78,13 @@ const GetAllFolders = () => {
       setLoading(false);
     }
   };
-  // Fetch folders from the API with pagination
   useEffect(() => {
-    fetchFolders(currentPage, entriesPerPage);
-  }, [currentPage, entriesPerPage]);
+    fetchFolders(currentPage, entriesPerPage); // Fetch data with persisted filters
+  }, [currentPage, entriesPerPage, searchUsername, filterShift]);
 
+  useEffect(() => {
+    saveFiltersToLocalStorage({ username: searchUsername, shift: filterShift });
+  }, [searchUsername, filterShift]);
   const handleFolderClick = (userId) => {
     navigate(`/admindashboard/viewfolders/${userId}`);
   };
@@ -103,12 +117,17 @@ const GetAllFolders = () => {
   };
 
   const handleSearch = () => {
-    fetchFolders(1, entriesPerPage); // Fetch filtered folders starting from the first page
+    // Reset to the first page when performing a new search
+    setCurrentPage(1);
+
+    // Fetch filtered folders with the updated filters
+    fetchFolders(1, entriesPerPage);
   };
 
   const handleResetFilters = () => {
     setSearchUsername("");
     setFilterShift("");
+    saveFiltersToLocalStorage({ username: "", shift: "" });
     fetchFolders(1, entriesPerPage); // Fetch all folders starting from the first page
   };
 

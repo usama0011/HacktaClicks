@@ -45,7 +45,7 @@ const Login = () => {
         </div>
         <div className="login-right">
           <div className="login-form-container">
-            <h2 className="login-title">Hacka Connect</h2>
+            <h2 className="login-title">Hackta Connect</h2>
             <p className="login-subtitle">Please enter your details</p>
             <Form
               requiredMark={false} // Disables the red star globally

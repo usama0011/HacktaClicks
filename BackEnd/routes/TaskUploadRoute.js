@@ -225,7 +225,9 @@ router.post("/", async (req, res) => {
     res.status(201).json(newTask);
   } catch (error) {
     console.error("Error analyzing image or saving task:", error);
-    res.status(500).json({ message: "Error creating task", error });
+    res
+      .status(500)
+      .json({ message: "Error creating task", errormsg: error.message });
   }
 });
 

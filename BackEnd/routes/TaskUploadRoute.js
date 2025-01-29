@@ -211,11 +211,21 @@ router.get("/:id", async (req, res) => {
 // Create a new task
 router.post("/", async (req, res) => {
   const { username, imageurl, shift, userId } = req.body;
+
   try {
-    const newTask = new TaskUpload({ username, imageurl, shift, userId });
+    const newTask = new TaskUpload({
+      username,
+      imageurl,
+      shift,
+      userId,
+      imageStatus,
+    });
+
     await newTask.save();
+
     res.status(201).json(newTask);
   } catch (error) {
+    console.error("Error analyzing image or saving task:", error);
     res.status(500).json({ message: "Error creating task", error });
   }
 });

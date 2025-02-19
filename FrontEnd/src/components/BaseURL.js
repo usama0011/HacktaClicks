@@ -2,7 +2,7 @@
 import axios from "axios";
 //http://localhost:5000/api
 //https://hackta-clicks-backend.vercel.app/api
-const baseURL = "http://localhost:5000/api"; // Replace with your API base URL
+const baseURL = "https://hackta-clicks-backend.vercel.app/api"; // Replace with your API base URL
 
 const axiosInstance = axios.create({
   baseURL,

@@ -68,7 +68,7 @@ const UploadImages = () => {
 
     try {
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dovmnsimj/image/upload",
+        "https://api.cloudinary.com/v1_1/dkoe4zyz3/image/upload",
         formData,
         {
           onUploadProgress: (event) => {

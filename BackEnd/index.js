@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoute.js";
 import TaskUpload from "./routes/TaskUploadRoute.js";
+import { deleteImagesFromJanuary } from "./routes/cloudinaryDelete.js"; // Import Cloudinary function
 
 dotenv.config();
 connectDB();
@@ -29,6 +30,12 @@ app.use(express.json());
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/taskupload", TaskUpload);
+// API Route to Trigger Cloudinary Image Deletion
+// API Endpoint to Trigger Deletion
+app.delete("/api/delete-january-images", async (req, res) => {
+  const result = await deleteImagesFromJanuary();
+  res.status(result.success ? 200 : 500).json(result);
+});
 app.get("/", (req, res, next) => {
   res.status(200).json("Server is Running on Perfect Welcome Hackta Connect");
 });

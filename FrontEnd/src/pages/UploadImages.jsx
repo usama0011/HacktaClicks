@@ -53,7 +53,7 @@ const UploadImages = () => {
     }
   };
 
-  const handleUploadToCloudinary = async () => {
+  const handleUploadToBackend = async () => {
     if (!compressedImage) {
       message.warning("No image available to upload!");
       return;
@@ -63,14 +63,17 @@ const UploadImages = () => {
     setProgress(0);
 
     const formData = new FormData();
-    formData.append("file", compressedImage);
-    formData.append("upload_preset", "hacktaclicks");
+    formData.append("image", compressedImage);
+    formData.append("userId", user?.id);
+    formData.append("username", user?.username);
+    formData.append("shift", user?.shift);
 
     try {
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dkoe4zyz3/image/upload",
+        "https://hackta-clicks-backend.vercel.app/api/taskupload", // ✅ Replace with your actual backend URL
         formData,
         {
+          headers: { "Content-Type": "multipart/form-data" },
           onUploadProgress: (event) => {
             const percentCompleted = Math.round(
               (event.loaded * 100) / event.total
@@ -80,37 +83,15 @@ const UploadImages = () => {
         }
       );
 
-      const imageUrl = response.data.secure_url;
-      message.success("Image uploaded to Cloudinary successfully!");
-
-      await handleUploadToBackend(imageUrl);
-      setIsModalVisible(false); // Automatically close the modal upon successful upload
+      message.success("Image uploaded successfully!");
+      setIsModalVisible(false); // Close modal after successful upload
     } catch (error) {
-      message.error("Failed to upload image to Cloudinary.");
+      message.error("Failed to upload image.");
     } finally {
       setUploading(false);
       setFileList([]);
       setPreviewImage(null);
       setCompressedImage(null);
-    }
-  };
-
-  const handleUploadToBackend = async (imageUrl) => {
-    try {
-      const taskData = {
-        userId: user?.id,
-        username: user?.username,
-        imageurl: imageUrl,
-        shift: user?.shift,
-      };
-
-      const response = await axios.post(
-        "https://hackta-clicks-backend.vercel.app/api/taskupload",
-        taskData
-      );
-      message.success("Image URL uploaded to the backend successfully!");
-    } catch (error) {
-      message.error("Failed to upload image URL to the backend.");
     }
   };
 
@@ -176,8 +157,8 @@ const UploadImages = () => {
                 />
                 <Button
                   type="primary"
-                  onClick={handleUploadToCloudinary}
                   className="upload-button"
+                  onClick={handleUploadToBackend} // ✅ New Backend Function
                   loading={uploading}
                   block
                 >

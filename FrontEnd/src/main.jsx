@@ -18,6 +18,7 @@ import WelcomeAdminDashboardPage from "./pages/WelcomeAdminDashboardPage";
 import AdminSideImagesView from "./pages/AdminSideImagesView";
 import OverView from "./pages/OverView";
 import HourlyWorkSir from "./pages/HourlyWorkSir";
+import HourlyWorkDetail from "./pages/HourlyWorkDetail";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, token } = useUserContext();
@@ -118,6 +119,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               path="hourly-reports/evening"
               element={<HourlyWorkSir shift="evening" />}
             />
+            <Route
+              path="single/:shift/date/:date"
+              element={<HourlyWorkDetail />}
+            />
+
             <Route
               path="hourly-reports/night"
               element={<HourlyWorkSir shift="night" />}

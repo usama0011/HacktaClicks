@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card, Typography, Spin, message } from "antd";
 import { UserOutlined, PictureOutlined, TeamOutlined } from "@ant-design/icons";
+import ClockImage from "../assets/clock.png";
 import { Link } from "react-router-dom";
 import axiosInstance from "../components/BaseURL";
 import "../styles/OverView.css";
@@ -168,15 +169,24 @@ const OverView = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
-          <Card style={{ minHeight: "387px" }} className="overview-card">
+          <Card
+            style={{
+              minHeight: "387px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            className="overview-card"
+          >
             <Link
               to="/admindashboard/hourly-reports/morning"
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <img
-                src="https://img.icons8.com/ios-filled/50/000000/clock.png"
+                src={ClockImage}
                 alt="Morning Report"
-                style={{ width: "50px", marginRight: "20px" }}
+                style={{ width: "100px", marginRight: "20px" }}
               />
               <Title style={{ textDecoration: "underline" }} level={4}>
                 Morning Report
@@ -185,15 +195,24 @@ const OverView = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
-          <Card style={{ minHeight: "387px" }} className="overview-card">
+          <Card
+            style={{
+              minHeight: "387px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            className="overview-card"
+          >
             <Link
               to="/admindashboard/hourly-reports/evening"
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <img
-                src="https://img.icons8.com/ios-filled/50/000000/clock.png"
+                src={ClockImage}
                 alt="Evening Report"
-                style={{ width: "50px", marginRight: "20px" }}
+                style={{ width: "100px", marginRight: "20px" }}
               />
               <Title style={{ textDecoration: "underline" }} level={4}>
                 Evening Report
@@ -202,15 +221,24 @@ const OverView = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} md={8} lg={6}>
-          <Card style={{ minHeight: "387px" }} className="overview-card">
+          <Card
+            style={{
+              minHeight: "387px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            className="overview-card"
+          >
             <Link
               to="/admindashboard/hourly-reports/night"
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <img
-                src="https://img.icons8.com/ios-filled/50/000000/clock.png"
+                src={ClockImage}
                 alt="Night Report"
-                style={{ width: "50px", marginRight: "20px" }}
+                style={{ width: "100px", marginRight: "20px" }}
               />
               <Title style={{ textDecoration: "underline" }} level={4}>
                 Night Report

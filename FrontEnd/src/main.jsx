@@ -5,7 +5,6 @@ import App from "./App";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ViewFolders from "./pages/ViewFolders";
-import FolderPreview from "./pages/FolderPreview";
 import UploadImages from "./pages/UploadImages";
 import GetAllFolders from "./pages/GetAllFolders";
 import UserFolder from "./pages/UserFolder";
@@ -18,7 +17,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import WelcomeAdminDashboardPage from "./pages/WelcomeAdminDashboardPage";
 import AdminSideImagesView from "./pages/AdminSideImagesView";
 import OverView from "./pages/OverView";
-import ShiftHourlyReport from "./pages/HourlyMorning";
+import HourlyWorkSir from "./pages/HourlyWorkSir";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, token } = useUserContext();
@@ -113,15 +112,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="overview" element={<OverView />} />
             <Route
               path="hourly-reports/morning"
-              element={<ShiftHourlyReport shift="morning" />}
+              element={<HourlyWorkSir shift="morning" />}
             />
             <Route
               path="hourly-reports/evening"
-              element={<ShiftHourlyReport shift="evening" />}
+              element={<HourlyWorkSir shift="evening" />}
             />
             <Route
               path="hourly-reports/night"
-              element={<ShiftHourlyReport shift="night" />}
+              element={<HourlyWorkSir shift="night" />}
             />
             <Route path="viewfolders/:userId" element={<UserFolder />} />
             <Route

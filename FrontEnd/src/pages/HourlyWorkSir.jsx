@@ -1,12 +1,10 @@
-// ShiftHourlyReport.js
 import React, { useState, useEffect } from "react";
 import { Table, Spin, Typography, message, Pagination } from "antd";
 import axiosInstance from "../components/BaseURL";
 import AnimatedCount from "../components/AnimatedCount"; // adjust the path as needed
-
 const { Title } = Typography;
 
-const ShiftHourlyReport = ({ shift }) => {
+const HourlyWorkSir = ({ shift }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -158,4 +156,4 @@ const ShiftHourlyReport = ({ shift }) => {
   );
 };
 
-export default ShiftHourlyReport;
+export default HourlyWorkSir;

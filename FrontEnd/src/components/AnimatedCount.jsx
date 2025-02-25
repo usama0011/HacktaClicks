@@ -11,7 +11,7 @@ const AnimatedCount = React.memo(({ value }) => {
     duration: 1,
     preserveValue: true,
   });
-
+  //chalo
   useEffect(() => {
     // When value changes, update the animated count imperatively.
     update(value);

@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import WelcomeAdminDashboardPage from "./pages/WelcomeAdminDashboardPage";
 import AdminSideImagesView from "./pages/AdminSideImagesView";
 import OverView from "./pages/OverView";
+import ShiftHourlyReport from "./pages/HourlyMorning";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, token } = useUserContext();
@@ -110,6 +111,18 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route index element={<WelcomeAdminDashboardPage />} />
             <Route path="manageusers" element={<UpdateUser />} />
             <Route path="overview" element={<OverView />} />
+            <Route
+              path="hourly-reports/morning"
+              element={<ShiftHourlyReport shift="morning" />}
+            />
+            <Route
+              path="hourly-reports/evening"
+              element={<ShiftHourlyReport shift="evening" />}
+            />
+            <Route
+              path="hourly-reports/night"
+              element={<ShiftHourlyReport shift="night" />}
+            />
             <Route path="viewfolders/:userId" element={<UserFolder />} />
             <Route
               path="adminside/:userId/folder/:folderDate"

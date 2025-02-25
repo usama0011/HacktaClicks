@@ -3,6 +3,7 @@ import { Row, Col, Card, Typography, Spin, message } from "antd";
 import { UserOutlined, PictureOutlined, TeamOutlined } from "@ant-design/icons";
 import axiosInstance from "../components/BaseURL";
 import "../styles/OverView.css";
+import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -164,6 +165,57 @@ const OverView = () => {
                 {screenshotStats.nightScreenshots}
               </div>
             </div>
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={6}>
+          <Card style={{ minHeight: "387px" }} className="overview-card">
+            <Link
+              to="/admindashboard/hourly-reports/morning"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <img
+                src="https://img.icons8.com/ios-filled/50/000000/clock.png"
+                alt="Morning Report"
+                style={{ width: "50px", marginRight: "20px" }}
+              />
+              <Title style={{ textDecoration: "underline" }} level={4}>
+                Morning Report
+              </Title>
+            </Link>
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={6}>
+          <Card style={{ minHeight: "387px" }} className="overview-card">
+            <Link
+              to="/admindashboard/hourly-reports/evening"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <img
+                src="https://img.icons8.com/ios-filled/50/000000/clock.png"
+                alt="Evening Report"
+                style={{ width: "50px", marginRight: "20px" }}
+              />
+              <Title style={{ textDecoration: "underline" }} level={4}>
+                Evening Report
+              </Title>
+            </Link>
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={6}>
+          <Card style={{ minHeight: "387px" }} className="overview-card">
+            <Link
+              to="/admindashboard/hourly-reports/night"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <img
+                src="https://img.icons8.com/ios-filled/50/000000/clock.png"
+                alt="Night Report"
+                style={{ width: "50px", marginRight: "20px" }}
+              />
+              <Title style={{ textDecoration: "underline" }} level={4}>
+                Night Report
+              </Title>
+            </Link>
           </Card>
         </Col>
       </Row>

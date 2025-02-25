@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoute.js";
 import TaskUpload from "./routes/TaskUploadRoute.js";
 import { deleteImagesFromJanuary } from "./routes/cloudinaryDelete.js"; // Import Cloudinary function
+import hourlyReportRoute from "./routes/HourlyRoute.js";
 
 dotenv.config();
 connectDB();
@@ -30,6 +31,8 @@ app.use(express.json());
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/taskupload", TaskUpload);
+app.use("/api/reports", hourlyReportRoute);
+
 // API Route to Trigger Cloudinary Image Deletion
 // API Endpoint to Trigger Deletion
 app.delete("/api/delete-january-images", async (req, res) => {
